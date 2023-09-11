@@ -20,7 +20,7 @@ app.post("/login", function (req, res) {
 
 app.post("/evalEmail", function (req, res) {
     const email = req.body.email;
-
+console.log(req);
     connection.query(`SELECT  idUser FROM users WHERE Email = ${user};`,
         function (err, result) {
             console.log(result);
