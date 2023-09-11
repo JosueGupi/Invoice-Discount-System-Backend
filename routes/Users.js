@@ -1,4 +1,4 @@
-const router = require("express").Router();
+const app = require("express").Router();
 const { response } = require("express");
 const connection = require("../mysql");
 
@@ -55,4 +55,4 @@ app.post("/evalMatrix", function (req, res) {
     );
 });
 
-module.exports = router;
+module.exports = app;
