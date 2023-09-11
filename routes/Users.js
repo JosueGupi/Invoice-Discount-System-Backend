@@ -51,6 +51,15 @@ app.post("/evalMatrix", function (req, res) {
                 throw error;
             }
             else{
+                const matrix = result[0];
+                console.log(matrix[cord1Showed[0]][cord1Showed[1]],"FIRST CORD");
+                if(matrix[cord1Showed[0]][cord1Showed[1]] === cord1 && matrix[cord2Showed[0]][cord2Showed[1]] === cord2 
+                    && matrix[cord3Showed[0]][cord3Showed[1]] === cord3){
+                        res.json(0)
+                    }
+                else{
+                    res.json(1)
+                }
                 
             }
             
