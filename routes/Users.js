@@ -55,3 +55,4 @@ app.post("/evalMatrix", function (req, res) {
     );
 });
 
+module.exports = router;
