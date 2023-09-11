@@ -1,7 +1,7 @@
 const cors = require('cors')
 const express = require("express")
 const app = express()
-const Users = require('.routes/Users')
+const Users = require('./routes/Users')
 app.use(express.json())
 app.use(cors())
 
