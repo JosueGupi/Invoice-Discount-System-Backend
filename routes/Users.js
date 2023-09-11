@@ -36,9 +36,9 @@ console.log(req);
 
 app.post("/evalMatrix", function (req, res) {
     const idUser = req.body.idUser,
-        cord1 = req.body.cord1,
-        cord2 = req.body.cord2,
-        cord3 = req.body.cord3,
+        cord1 = Number(req.body.cord1),
+        cord2 = Number(req.body.cord2),
+        cord3 = Number(req.body.cord3),
         cord1Showed = req.body.cord1Showed,
         cord2Showed = req.body.cord2Showed,
         cord3Showed = req.body.cord3Showed;
