@@ -1,4 +1,4 @@
-const app = require("express").Router();
+const router = require("express").Router();
 const { response } = require("express");
 const connection = require("../mysql");
 
