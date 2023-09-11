@@ -38,9 +38,12 @@ app.post("/evalMatrix", function (req, res) {
     const idUser = req.body.idUser,
         cord1 = req.body.cord1,
         cord2 = req.body.cord2,
-        cord3 = req.body.cord3;
+        cord3 = req.body.cord3,
+        cord1Showed = req.body.cord1Showed,
+        cord2Showed = req.body.cord2Showed,
+        cord3Showed = req.body.cord3Showed;
 
-    connection.query(`SELECT  Matrix FROM users WHERE idUser = ${idUser};`,
+    connection.query(`SELECT  Matrix FROM usersmatrix WHERE idUser = ${idUser};`,
         function (err, result) {
             console.log(result);
             if (err) {
