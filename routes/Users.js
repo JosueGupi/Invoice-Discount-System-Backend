@@ -20,7 +20,7 @@ app.post("/login", function (req, res) {
 
 app.post("/evalEmail", function (req, res) {
     const email = req.body.email;
-console.log(req);
+    console.log(req);
     connection.query(`SELECT  idUser, Name FROM users WHERE Email = '${email}';`,
         function (err, result) {
             console.log(result);
@@ -45,63 +45,44 @@ app.post("/evalMatrix", function (req, res) {
 
     connection.query(`SELECT  Matrix FROM usersmatrix WHERE idUser = ${idUser};`,
         function (err, result) {
-            
+
             if (err) {
                 res.json(err);
                 throw error;
             }
-            else{
+            else {
                 const matrix = result[0].Matrix;
-                
-                if(matrix[cord1Showed[0]][cord1Showed[1]-1] === cord1 && matrix[cord2Showed[0]][cord2Showed[1]-1] === cord2 
-                    && matrix[cord3Showed[0]][cord3Showed[1]-1] === cord3){
-                        res.json(0)
-                    }
-                else{
+
+                if (matrix[cord1Showed[0]][cord1Showed[1] - 1] === cord1 && matrix[cord2Showed[0]][cord2Showed[1] - 1] === cord2
+                    && matrix[cord3Showed[0]][cord3Showed[1] - 1] === cord3) {
+                    res.json(0)
+                }
+                else {
                     res.json(1)
                 }
-                
+
             }
-            
+
         }
     );
 });
-/*
-app.get("/test" ,function (req, res) {
-    const idUser = 1,
-        cord1 = 1,
-        cord2 = 2,
-        cord3 = 3,
-        cord1Showed = 'A1',
-        cord2Showed = 'B2',
-        cord3Showed = 'A3';
+app.post("/changePassword", function (req, res) {
+    const idUser = req.body.idUser,
+        password = req.body.password
 
-    connection.query(`SELECT  Matrix FROM usersmatrix WHERE idUser = ${idUser};`,
+    connection.query(`UPDATE users SET Password = '${password}' WHERE idUser = ${idUser};`,
         function (err, result) {
-            
+
             if (err) {
                 res.json(err);
                 throw error;
             }
-            else{
-                const matrix = result[0].Matrix;
-                console.log(matrix,'Matrix');
-                console.log(matrix[cord1Showed[0]][cord1Showed[1]-1],"FIRST");
-                console.log(matrix[cord2Showed[0]][cord2Showed[1]-1],"SECOND");
-                console.log(matrix[cord3Showed[0]][cord3Showed[1]-1],"THIRD");
-                console.log()
-                if(matrix[cord1Showed[0]][cord1Showed[1]-1] === cord1 && matrix[cord2Showed[0]][cord2Showed[1]-1] === cord2 
-                    && matrix[cord3Showed[0]][cord3Showed[1]-1] === cord3){
-                        res.json(0)
-                    }
-                else{
-                    res.json(1)
-                }
-                
+            else {
+                res.json(1)
             }
-            
         }
     );
-});*/
+});
+
 
 module.exports = app;
