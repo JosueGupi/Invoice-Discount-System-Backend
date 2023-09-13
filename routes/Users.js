@@ -4,10 +4,10 @@ const connection = require("../mysql");
 
 app.post("/login", function (req, res) {
     const password = req.body.password,
-        user = req.body.user;
-    connection.query(`SELECT idUser, Name FROM users WHERE Email = '${user}' AND Password = '${password}';`,
+        email = req.body.email;
+    connection.query(`SELECT idUser, Name FROM users WHERE Email = '${email}' AND Password = '${password}';`,
         function (err, result) {
-            console.log(result);
+            
             if (err) {
                 res.json(err);
                 throw error;
