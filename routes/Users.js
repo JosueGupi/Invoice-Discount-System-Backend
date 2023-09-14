@@ -78,7 +78,7 @@ app.post("/changePassword", function (req, res) {
                 throw error;
             }
             else {
-                res.json(1)
+                res.json(result)
             }
         }
     );
@@ -94,7 +94,7 @@ app.get("/getUsers", function (req, res) {
                 throw error;
             }
             else {
-                res.json(1)
+                res.json(result)
             }
         }
     );
