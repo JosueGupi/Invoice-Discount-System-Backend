@@ -83,6 +83,22 @@ app.post("/changePassword", function (req, res) {
         }
     );
 });
+app.get("/getUsers", function (req, res) {
+    
+
+    connection.query(`SELECT idUser, Name, Email, Password FROM users`,
+        function (err, result) {
+
+            if (err) {
+                res.json(err);
+                throw error;
+            }
+            else {
+                res.json(1)
+            }
+        }
+    );
+});
 
 
 module.exports = app;
