@@ -123,7 +123,7 @@ app.post("/updateUser", function (req, res) {
         idUser = req.body.idUser;
         
 
-    connection.query(`UPDATE users SET Name = '${name}', Email = '${email}' WHERE idUser = ${idUser}`,
+    connection.query(`UPDATE users SET Name = '${name}', Email = '${email} WHERE idUser = ${idUser}`,
         function (err, result) {
 
             if (err) {
@@ -137,11 +137,11 @@ app.post("/updateUser", function (req, res) {
     );
 });
 
-app.delete("/deleteUser", function (req, res) {
+app.post("/deleteUser", function (req, res) {
     const idUser = req.body.idUser;
         
 
-    connection.query(`DELETE FROM users WHERE idUser = '${idUser}'`,
+    connection.query(`DELETE FROM users WHERE idUser = ${idUser}`,
         function (err, result) {
 
             if (err) {
