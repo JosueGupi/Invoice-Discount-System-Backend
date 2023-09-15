@@ -5,7 +5,7 @@ const connection = require("../mysql");
 app.get("/getAccounts", function (req, res) {
     
 
-    connection.query(`SELECT idAccounts, Name, Number, BankName FROM accountsview;`,
+    connection.query(`SELECT idAccount, Name, Number, BankName FROM accountsview;`,
         function (err, result) {
 
             if (err) {
@@ -37,9 +37,10 @@ app.post("/createAccount", function (req, res) {
     );
 });
 app.post("/updateAccount", function (req, res) {
-    const idClient = req.body.idClient,
+    console.log(req.body);
+    const idClient = Number(req.body.idClient),
         number = req.body.number,
-        idBank = req.body.idBank,
+        idBank = Number(req.body.idBank),
         idAccount = req.body.idAccount;
         
 
