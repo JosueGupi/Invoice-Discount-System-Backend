@@ -4,12 +4,14 @@ const app = express()
 const Users = require('./routes/Users')
 const Accounts = require('./routes/Accounts')
 const Banks = require('./routes/Banks')
+const Clients = require('./routes/Clients')
 app.use(express.json())
 app.use(cors())
 
 app.use('/users',Users)
 app.use('/accounts',Accounts)
 app.use('/banks',Banks)
+app.use('/clients',Clients)
 
 
 app.listen(process.env.PORT || 3001,()=>{
