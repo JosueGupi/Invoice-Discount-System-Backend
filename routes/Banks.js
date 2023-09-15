@@ -39,7 +39,7 @@ app.post("/updateBank", function (req, res) {
         idBank = req.body.idBank;
 
 
-    connection.query(`UPDATE banks SET Name = ${name} WHERE idBank = ${idBank}`,
+    connection.query(`UPDATE banks SET Name = '${name}' WHERE idBank = ${idBank}`,
         function (err, result) {
 
             if (err) {
