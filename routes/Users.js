@@ -10,7 +10,7 @@ app.post("/login", function (req, res) {
             
             if (err) {
                 res.json(err);
-                throw error;
+                throw err;
             }
 
             res.json(result);
@@ -26,7 +26,7 @@ app.post("/evalEmail", function (req, res) {
             console.log(result);
             if (err) {
                 res.json(err);
-                throw error;
+                throw err;
             }
 
             res.json(result);
@@ -48,7 +48,7 @@ app.post("/evalMatrix", function (req, res) {
 
             if (err) {
                 res.json(err);
-                throw error;
+                throw err;
             }
             else {
                 const matrix = result[0].Matrix;
@@ -75,7 +75,7 @@ app.post("/changePassword", function (req, res) {
 
             if (err) {
                 res.json(err);
-                throw error;
+                throw err;
             }
             else {
                 res.json(result)
@@ -91,7 +91,7 @@ app.get("/getUsers", function (req, res) {
 
             if (err) {
                 res.json(err);
-                throw error;
+                throw err;
             }
             else {
                 res.json(result)
@@ -109,7 +109,7 @@ app.post("/createUser", function (req, res) {
 
             if (err) {
                 res.json(err);
-                throw error;
+                throw err;
             }
             else {
                 res.json(result)
@@ -123,12 +123,12 @@ app.post("/updateUser", function (req, res) {
         idUser = req.body.idUser;
         
 
-    connection.query(`UPDATE users SET Name = '${name}', Email = '${email} WHERE idUser = ${idUser}`,
+    connection.query(`UPDATE users SET Name = '${name}', Email = '${email}' WHERE idUser = ${idUser}`,
         function (err, result) {
 
             if (err) {
                 res.json(err);
-                throw error;
+                throw err;
             }
             else {
                 res.json(result)
