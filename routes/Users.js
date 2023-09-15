@@ -119,7 +119,8 @@ app.post("/createUser", function (req, res) {
 });
 app.post("/updateUser", function (req, res) {
     const name = req.body.name,
-        email = req.body.email;
+        email = req.body.email,
+        idUser = req.body.idUser;
         
 
     connection.query(`UPDATE users SET Name = '${name}', Email = '${email} WHERE idUser = ${idUser}`,
