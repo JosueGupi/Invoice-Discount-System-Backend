@@ -99,6 +99,58 @@ app.get("/getUsers", function (req, res) {
         }
     );
 });
+app.post("/createUser", function (req, res) {
+    const name = req.body.name,
+        email = req.body.email,
+        password = req.body.password
 
+    connection.query(`INSERT INTO users (Name, Email, Password) VALUES  ('${name}', '${email}', '${password}')`,
+        function (err, result) {
 
+            if (err) {
+                res.json(err);
+                throw error;
+            }
+            else {
+                res.json(result)
+            }
+        }
+    );
+});
+app.post("/updateUser", function (req, res) {
+    const name = req.body.name,
+        email = req.body.email;
+        
+
+    connection.query(`UPDATE users SET Name = '${name}', Email = '${email}'`,
+        function (err, result) {
+
+            if (err) {
+                res.json(err);
+                throw error;
+            }
+            else {
+                res.json(result)
+            }
+        }
+    );
+});
+
+app.delete("/delete", function (req, res) {
+    const idUser = req.body.idUser;
+        
+
+    connection.query(`DELETE FROM users WHERE idUser = '${idUser}'`,
+        function (err, result) {
+
+            if (err) {
+                res.json(err);
+                throw error;
+            }
+            else {
+                res.json(result)
+            }
+        }
+    );
+});
 module.exports = app;
