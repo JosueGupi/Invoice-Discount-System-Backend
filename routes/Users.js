@@ -123,7 +123,7 @@ app.post("/updateUser", function (req, res) {
         idUser = req.body.idUser;
         
 
-    connection.query(`UPDATE users SET Name = '${name}', Email = '${email} WHERE idUser = ${idUser}`,
+    connection.query(`UPDATE users SET Name = '${name}', Email = '${email}' WHERE idUser = ${idUser}`,
         function (err, result) {
 
             if (err) {
