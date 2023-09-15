@@ -122,7 +122,7 @@ app.post("/updateUser", function (req, res) {
         email = req.body.email;
         
 
-    connection.query(`UPDATE users SET Name = '${name}', Email = '${email}'`,
+    connection.query(`UPDATE users SET Name = '${name}', Email = '${email} WHERE idUser = ${idUser}`,
         function (err, result) {
 
             if (err) {
@@ -136,7 +136,7 @@ app.post("/updateUser", function (req, res) {
     );
 });
 
-app.delete("/delete", function (req, res) {
+app.delete("/deleteUser", function (req, res) {
     const idUser = req.body.idUser;
         
 
