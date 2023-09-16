@@ -62,7 +62,7 @@ app.post("/deleteClient", function (req, res) {
     const idClient = req.body.idClient;
 
 
-    connection.query(`DELETE FROM clients WHERE idBank = ${idClient}`,
+    connection.query(`DELETE FROM clients WHERE idClient = ${idClient}`,
         function (err, result) {
 
             if (err) {
