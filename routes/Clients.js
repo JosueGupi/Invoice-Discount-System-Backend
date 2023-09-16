@@ -24,7 +24,7 @@ app.post("/createClient", function (req, res) {
     const email = req.body.email;
     const idenCard = req.body.idenCard;
 
-    connection.query(`INSERT INTO banks (Name, Email, IdentificationCard) VALUES  ('${name}', '${email}', '${idenCard}')`,
+    connection.query(`INSERT INTO clients (Name, Email, IdentificationCard) VALUES  ('${name}', '${email}', '${idenCard}')`,
         function (err, result) {
 
             if (err) {
@@ -44,7 +44,7 @@ app.post("/updateClient", function (req, res) {
             idClient = req.body.idClient;
 
 
-    connection.query(`UPDATE banks SET Name = '${name}', Email = '${email}', IdentificationCard = '${idenCard}'  WHERE idClient = ${idClient}`,
+    connection.query(`UPDATE clients SET Name = '${name}', Email = '${email}', IdentificationCard = '${idenCard}'  WHERE idClient = ${idClient}`,
         function (err, result) {
 
             if (err) {
@@ -58,11 +58,11 @@ app.post("/updateClient", function (req, res) {
     );
 });
 
-app.post("/deleteBank", function (req, res) {
+app.post("/deleteClient", function (req, res) {
     const idClient = req.body.idClient;
 
 
-    connection.query(`DELETE FROM Banks WHERE idBank = ${idClient}`,
+    connection.query(`DELETE FROM clients WHERE idBank = ${idClient}`,
         function (err, result) {
 
             if (err) {
