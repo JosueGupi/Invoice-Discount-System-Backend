@@ -18,8 +18,6 @@ app.get("/getCodes", function (req, res) {
 });
 
 app.post("/updateCode", function (req, res) {
-    console.log("--------------------");
-    console.log(req.body);
     const idClient = Number(req.body.idClient),
         code = Number(req.body.code),
         description = req.body.description,
@@ -27,6 +25,25 @@ app.post("/updateCode", function (req, res) {
 
 
     connection.query(`UPDATE accountingcodes SET idClient = ${idClient}, Code = ${code}, Description = '${description}' WHERE idAccountingCodes = ${idAccountingCodes}`,
+        function (err, result) {
+
+            if (err) {
+                res.json(err);
+                throw err;
+            }
+            else {
+                res.json(result)
+            }
+        }
+    );
+});
+
+app.post("/createAccount", function (req, res) {
+    const idClient = Number(req.body.idClient),
+        code = Number(req.body.code),
+        description = req.body.description;
+
+    connection.query(`INSERT INTO accountingcodes (idClient, Code, Description) VALUES  (${idClient}, ${code}, '${description}')`,
         function (err, result) {
 
             if (err) {
