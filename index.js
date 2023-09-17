@@ -5,15 +5,17 @@ const Users = require('./routes/Users')
 const Accounts = require('./routes/Accounts')
 const Banks = require('./routes/Banks')
 const Clients = require('./routes/Clients')
+const Codes = require('./routes/Codes')
+
 app.use(express.json())
 app.use(cors())
 
-app.use('/users',Users)
-app.use('/accounts',Accounts)
-app.use('/banks',Banks)
-app.use('/clients',Clients)
+app.use('/users', Users)
+app.use('/accounts', Accounts)
+app.use('/banks', Banks)
+app.use('/clients', Clients)
+app.use('/codes', Codes)
 
-
-app.listen(process.env.PORT || 3001,()=>{
+app.listen(process.env.PORT || 3001, () => {
     console.log('Servers Run')
 });
