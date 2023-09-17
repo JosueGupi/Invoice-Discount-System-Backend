@@ -57,4 +57,22 @@ app.post("/createCode", function (req, res) {
     );
 });
 
+app.post("/deleteCode", function (req, res) {
+    const idAccountingCodes = req.body.idAccountingCodes;
+
+
+    connection.query(`DELETE FROM accountingcodes WHERE idAccountingCodes = ${idAccountingCodes}`,
+        function (err, result) {
+
+            if (err) {
+                res.json(err);
+                throw error;
+            }
+            else {
+                res.json(result)
+            }
+        }
+    );
+});
+
 module.exports = app;
