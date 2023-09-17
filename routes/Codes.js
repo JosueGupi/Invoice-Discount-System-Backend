@@ -38,7 +38,7 @@ app.post("/updateCode", function (req, res) {
     );
 });
 
-app.post("/createAccount", function (req, res) {
+app.post("/createCode", function (req, res) {
     const idClient = Number(req.body.idClient),
         code = Number(req.body.code),
         description = req.body.description;
