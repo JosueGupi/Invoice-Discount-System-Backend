@@ -18,10 +18,11 @@ app.get("/getCodes", function (req, res) {
 });
 
 app.post("/updateCode", function (req, res) {
+    console.log("--------------------");
     console.log(req.body);
     const idClient = Number(req.body.idClient),
         code = Number(req.body.number),
-        description = Number(req.body.description),
+        description = req.body.description,
         idAccountingCodes = Number(req.body.idAccountingCodes);
 
 
