@@ -21,7 +21,7 @@ app.post("/updateCode", function (req, res) {
     console.log("--------------------");
     console.log(req.body);
     const idClient = Number(req.body.idClient),
-        code = Number(req.body.number),
+        code = Number(req.body.code),
         description = req.body.description,
         idAccountingCodes = Number(req.body.idAccountingCodes);
 
