@@ -25,7 +25,7 @@ app.post("/updateCode", function (req, res) {
         codeType = Number(req.body.codeType);
 
 
-    connection.query(`UPDATE accountingcodes SET idClient = ${idClient}, Code = ${code}, Description = '${description}', CodeType = ${codeType}WHERE idAccountingCodes = ${idAccountingCodes}`,
+    connection.query(`UPDATE accountingcodes SET idClient = ${idClient}, Code = ${code}, Description = '${description}', CodeType = ${codeType} WHERE idAccountingCodes = ${idAccountingCodes}`,
         function (err, result) {
 
             if (err) {
