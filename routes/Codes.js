@@ -19,13 +19,13 @@ app.get("/getCodes", function (req, res) {
 
 app.post("/updateCode", function (req, res) {
     const idClient = Number(req.body.idClient),
-        code = Number(req.body.code),
+        code = req.body.code,
         description = req.body.description,
         idAccountingCodes = Number(req.body.idAccountingCodes),
         codeType = Number(req.body.codeType);
 
 
-    connection.query(`UPDATE accountingcodes SET idClient = ${idClient}, Code = ${code}, Description = '${description}', CodeType = ${codeType} WHERE idAccountingCodes = ${idAccountingCodes};`,
+    connection.query(`UPDATE accountingcodes SET idClient = ${idClient}, Code = '${code}', Description = '${description}', CodeType = ${codeType} WHERE idAccountingCodes = ${idAccountingCodes};`,
         function (err, result) {
 
             if (err) {
@@ -33,7 +33,7 @@ app.post("/updateCode", function (req, res) {
                 throw err;
             }
             else {
-                res.json(result)
+                res.json(result) 
             }
         }
     );
@@ -41,11 +41,11 @@ app.post("/updateCode", function (req, res) {
 
 app.post("/createCode", function (req, res) {
     const idClient = Number(req.body.idClient),
-        code = Number(req.body.code),
+        code = req.body.code,
         description = req.body.description,
         codeType = Number(req.body.codeType);
 
-    connection.query(`INSERT INTO accountingcodes (idClient, Code, Description, CodeType) VALUES  (${idClient}, ${code}, '${description}',${codeType});`,
+    connection.query(`INSERT INTO accountingcodes (idClient, Code, Description, CodeType) VALUES  (${idClient}, '${code}', '${description}',${codeType});`,
         function (err, result) {
 
             if (err) {
