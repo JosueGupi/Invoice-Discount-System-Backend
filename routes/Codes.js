@@ -3,7 +3,7 @@ const { response } = require("express");
 const connection = require("../mysql");
 
 app.get("/getCodes", function (req, res) {
-    connection.query(`SELECT idAccountingCodes, Code, Description, clients.Name FROM accountingcodes INNER JOIN clients ON accountingcodes.idClient = clients.idClient;`,
+    connection.query(`SELECT idAccountingCodes, Code, Description, clients.Name, CASE WHEN CodeType = 0 THEN 'Gastos Legales' WHEN CodeType = 1  THEN 'Intereses Reales' WHEN CodeType = 2 THEN 'Intereses Diferidos' ELSE 'Otros' END AS TypeCode FROM accountingcodes INNER JOIN clients ON accountingcodes.idClient = clients.idClient;`,
         function (err, result) {
 
             if (err) {
@@ -41,9 +41,10 @@ app.post("/updateCode", function (req, res) {
 app.post("/createCode", function (req, res) {
     const idClient = Number(req.body.idClient),
         code = Number(req.body.code),
-        description = req.body.description;
+        description = req.body.description,
+        codeType = Number(req.body.codeType);
 
-    connection.query(`INSERT INTO accountingcodes (idClient, Code, Description) VALUES  (${idClient}, ${code}, '${description}')`,
+    connection.query(`INSERT INTO accountingcodes (idClient, Code, Description, CodeType) VALUES  (${idClient}, ${code}, '${description}',${codeType})`,
         function (err, result) {
 
             if (err) {
