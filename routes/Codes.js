@@ -25,7 +25,7 @@ app.post("/updateCode", function (req, res) {
         codeType = Number(req.body.codeType);
 
 
-    connection.query(`UPDATE accountingcodes SET idClient = ${idClient}, Code = ${code}, Description = '${description}', CodeType = ${codeType} WHERE idAccountingCodes = ${idAccountingCodes}`,
+    connection.query(`UPDATE accountingcodes SET idClient = ${idClient}, Code = ${code}, Description = '${description}', CodeType = ${codeType} WHERE idAccountingCodes = ${idAccountingCodes};`,
         function (err, result) {
 
             if (err) {
@@ -45,7 +45,7 @@ app.post("/createCode", function (req, res) {
         description = req.body.description,
         codeType = Number(req.body.codeType);
 
-    connection.query(`INSERT INTO accountingcodes (idClient, Code, Description, CodeType) VALUES  (${idClient}, ${code}, '${description}',${codeType})`,
+    connection.query(`INSERT INTO accountingcodes (idClient, Code, Description, CodeType) VALUES  (${idClient}, ${code}, '${description}',${codeType});`,
         function (err, result) {
 
             if (err) {
@@ -63,7 +63,7 @@ app.post("/deleteCode", function (req, res) {
     const idAccountingCodes = req.body.idAccountingCodes;
 
 
-    connection.query(`DELETE FROM accountingcodes WHERE idAccountingCodes = ${idAccountingCodes}`,
+    connection.query(`DELETE FROM accountingcodes WHERE idAccountingCodes = ${idAccountingCodes};`,
         function (err, result) {
 
             if (err) {
