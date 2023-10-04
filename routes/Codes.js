@@ -21,10 +21,11 @@ app.post("/updateCode", function (req, res) {
     const idClient = Number(req.body.idClient),
         code = Number(req.body.code),
         description = req.body.description,
-        idAccountingCodes = Number(req.body.idAccountingCodes);
+        idAccountingCodes = Number(req.body.idAccountingCodes),
+        codeType = Number(req.body.codeType);
 
 
-    connection.query(`UPDATE accountingcodes SET idClient = ${idClient}, Code = ${code}, Description = '${description}' WHERE idAccountingCodes = ${idAccountingCodes}`,
+    connection.query(`UPDATE accountingcodes SET idClient = ${idClient}, Code = ${code}, Description = '${description}' CodeType = ${codeType}WHERE idAccountingCodes = ${idAccountingCodes}`,
         function (err, result) {
 
             if (err) {
