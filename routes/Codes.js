@@ -76,5 +76,20 @@ app.post("/deleteCode", function (req, res) {
         }
     );
 });
+app.post("/getClientCodes", function (req, res) {
+    const idClient = req.body.idClient;
+    connection.query(`CALL SP_GetClientCodes (${idClient});`,
+        function (err, result) {
+
+            if (err) {
+                res.json(err);
+                throw err;
+            }
+            else {
+                res.json(result);
+            }
+        }
+    );
+});
 
 module.exports = app;
