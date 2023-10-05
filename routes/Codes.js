@@ -68,7 +68,7 @@ app.post("/deleteCode", function (req, res) {
 
             if (err) {
                 res.json(err);
-                throw error;
+                throw err;
             }
             else {
                 res.json(result)
