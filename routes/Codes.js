@@ -3,7 +3,7 @@ const { response } = require("express");
 const connection = require("../mysql");
 
 app.get("/getCodes", function (req, res) {
-    connection.query(`SELECT idAccountingCodes, Code, Description, clients.Name, CASE WHEN CodeType = 0 THEN 'Gastos Legales' WHEN CodeType = 1  THEN 'Intereses Reales' WHEN CodeType = 2 THEN 'Intereses Diferidos' ELSE 'Otros' END AS TypeCode FROM accountingcodes INNER JOIN clients ON accountingcodes.idClient = clients.idClient;`,
+    connection.query(`SELECT idAccountingCodes, Code, Description, clients.Name, CASE WHEN CodeType = 0 THEN 'Comisión' WHEN CodeType = 1  THEN 'Intereses Reales' WHEN CodeType = 2 THEN 'Intereses Diferidos'  WHEN CodeType = 3 THEN 'Retención' ELSE 'Otros' END AS TypeCode FROM accountingcodes INNER JOIN clients ON accountingcodes.idClient = clients.idClient;`,
         function (err, result) {
 
             if (err) {
