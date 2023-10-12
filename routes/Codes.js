@@ -1,7 +1,7 @@
 const app = require("express").Router();
 const { response } = require("express");
 const connection = require("../mysql");
-
+// refreshing
 app.get("/getCodes", function (req, res) {
     connection.query(`SELECT idAccountingCodes, Code, Description, clients.Name, CASE WHEN CodeType = 0 THEN 'Comisión' WHEN CodeType = 1  THEN 'Intereses Reales' WHEN CodeType = 2 THEN 'Intereses Diferidos'  WHEN CodeType = 3 THEN 'Retención' ELSE 'Otros' END AS TypeCode FROM accountingcodes INNER JOIN clients ON accountingcodes.idClient = clients.idClient;`,
         function (err, result) {
