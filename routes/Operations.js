@@ -3,7 +3,7 @@ const { response } = require("express");
 const connection = require("../mysql");
 // refreshing
 app.get("/getLastNumberOP", function (req, res) {
-    connection.query(`SELECT MAX(idOperation) +1 FROM operations;`,
+    connection.query(`SELECT MAX(idOperation) +1 AS opNumber FROM operations;`,
         function (err, result) {
 
             if (err) {
@@ -11,7 +11,9 @@ app.get("/getLastNumberOP", function (req, res) {
                 throw err;
             }
             else {
+                
                 res.json(result);
+
             }
         }
     );
@@ -53,7 +55,60 @@ app.post("/createOperation", function (req, res) {
                 throw err;
             }
             else {
+                const insertedId = result.insertId;
+                for(let i = 0; i < invoices.length; i++) {
+                    let invoiceNumber = Number(invoices[i].number),
+                        amount = Number(invoices[i].amount),
+                        date = invoices[i].date,
+                        payer = invoices[i].payer;
+
+                    let queryInvoices = `INSERT INTO invoices (idOperation, Number, Entity, Date, Amount)`+
+                    ` VALUES (${insertedId}, ${invoiceNumber}, '${payer}', '${date}', ${amount}); `
+                    connection.query(queryInvoices,
+                        function (err, result) {
+
+                        if (err) {
+                            res.json(err);
+                            throw err;
+                        }})
+                }
+
+                for(let i = 0; i < reductions.length; i++) {
+                    let reductionNumber = Number(reductions[i].number),
+                        amount = Number(reductions[i].amount),
+                        description = reductions[i].description,
+                        code = reductions[i].code;
+
+                    let queryReductions = `CALL SP_InsertReductions(${insertedId}, ${reductionNumber}, '${code}', ${amount}, '${description}');
+                    `
+                    connection.query(queryReductions,
+                        function (err, result) {
+
+                        if (err) {
+                            res.json(err);
+                            throw err;
+                        }})
+                }
+
+                
                 res.json(result);
+            }
+        }
+    );
+});
+
+app.get("/getOperations", function (req, res) {
+    connection.query(`SELECT idOperation FROM operations;`,
+        function (err, result) {
+
+            if (err) {
+                res.json(err);
+                throw err;
+            }
+            else {
+                
+                res.json(result);
+
             }
         }
     );
