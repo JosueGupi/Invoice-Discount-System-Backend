@@ -1,6 +1,6 @@
-projectKey=Invoice-Discount-System-Backend
+projectKey=Invoice-Discount-System-Backend-3
 serverUrl=http://localhost:9000
 serverVersion=10.2.0.77647
-dashboardUrl=http://localhost:9000/dashboard?id=Invoice-Discount-System-Backend
-ceTaskId=AYqpHowVYtFFY5nX4ApB
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AYqpHowVYtFFY5nX4ApB
+dashboardUrl=http://localhost:9000/dashboard?id=Invoice-Discount-System-Backend-3
+ceTaskId=AYs054JrDALEq9OLs_5F
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AYs054JrDALEq9OLs_5F
