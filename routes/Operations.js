@@ -114,8 +114,8 @@ app.get("/getOperations", function (req, res) {
     );
 });
 
-app.get("/creditNote", function (req, res) {
-    connection.query(`SELECT idOperation FROM operations;`,
+app.get("/calendarOperations", function (req, res) {
+    connection.query(`SELECT title, start FROM opcalendarview;`,
         function (err, result) {
 
             if (err) {
@@ -125,7 +125,6 @@ app.get("/creditNote", function (req, res) {
             else {
                 
                 res.json(result);
-
             }
         }
     );
