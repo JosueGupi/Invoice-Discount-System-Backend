@@ -114,4 +114,21 @@ app.get("/getOperations", function (req, res) {
     );
 });
 
+app.get("/creditNote", function (req, res) {
+    connection.query(`SELECT idOperation FROM operations;`,
+        function (err, result) {
+
+            if (err) {
+                res.json(err);
+                throw err;
+            }
+            else {
+                
+                res.json(result);
+
+            }
+        }
+    );
+});
+
 module.exports = app;
