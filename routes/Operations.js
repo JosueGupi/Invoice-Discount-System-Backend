@@ -41,13 +41,13 @@ app.post("/createOperation", function (req, res) {
         realInterestCode = Number(req.body.realInterestCode),//
         deferredInterestCode = Number(req.body.deferredInterestCode);//
         let date= new Date();
-        date = date.toLocaleString("es-US", {timeZone: "America/Costa_Rica"});
+        //date = date.toLocaleString("es-US", {timeZone: "America/Costa_Rica"});
 
         
 
         
     const queryStrin = `INSERT INTO operations (idClient, SubTotal, Total, Commision, Term, Retention, Fee, Interest, Dollar, TransferCost, idAccountingCodeDeposit, Balance, Honoraries, idAccountingCodeComission, idAccountingCodeLegalExpense, idAccountingCodeTransfer, idAccountingCodeRetention, idAccountingCodeRealInterest, idAccountingCodeDeferredInterest, Date) `+
-    `VALUES (${idClient}, ${subTotal}, ${total}, ${comission}, ${term}, ${retention}, ${fee}, ${interest}, ${dollars}, ${transferCost}, ${opCode}, ${total}, ${honoraries},${comissionCode},${legalExpenseCode},${transferCode},${retentionCode},${realInterestCode},${deferredInterestCode},'${date.getYear()+1900}-${date.getMonth()+1}-${date.getDate()}');`
+    `VALUES (${idClient}, ${subTotal}, ${total}, ${comission}, ${term}, ${retention}, ${fee}, ${interest}, ${dollars}, ${transferCost}, ${opCode}, ${total}, ${honoraries},${comissionCode},${legalExpenseCode},${transferCode},${retentionCode},${realInterestCode},${deferredInterestCode},'${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}');`
     console.log(queryStrin)
     connection.query(queryStrin,
         function (err, result) {
