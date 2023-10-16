@@ -40,12 +40,14 @@ app.post("/createOperation", function (req, res) {
         honoraries = Number(req.body.honoraries),//
         realInterestCode = Number(req.body.realInterestCode),//
         deferredInterestCode = Number(req.body.deferredInterestCode);//
-        
+        let date= new Date();
+        date = date.toLocaleString("es-US", {timeZone: "America/Costa_Rica"});
+
         
 
         
-    const queryStrin = `INSERT INTO operations (idClient, SubTotal, Total, Commision, Term, Retention, Fee, Interest, Dollar, TransferCost, idAccountingCodeDeposit, Balance, Honoraries, idAccountingCodeComission, idAccountingCodeLegalExpense, idAccountingCodeTransfer, idAccountingCodeRetention, idAccountingCodeRealInterest, idAccountingCodeDeferredInterest) `+
-    `VALUES (${idClient}, ${subTotal}, ${total}, ${comission}, ${term}, ${retention}, ${fee}, ${interest}, ${dollars}, ${transferCost}, ${opCode}, ${total}, ${honoraries},${comissionCode},${legalExpenseCode},${transferCode},${retentionCode},${realInterestCode},${deferredInterestCode});`
+    const queryStrin = `INSERT INTO operations (idClient, SubTotal, Total, Commision, Term, Retention, Fee, Interest, Dollar, TransferCost, idAccountingCodeDeposit, Balance, Honoraries, idAccountingCodeComission, idAccountingCodeLegalExpense, idAccountingCodeTransfer, idAccountingCodeRetention, idAccountingCodeRealInterest, idAccountingCodeDeferredInterest, Date) `+
+    `VALUES (${idClient}, ${subTotal}, ${total}, ${comission}, ${term}, ${retention}, ${fee}, ${interest}, ${dollars}, ${transferCost}, ${opCode}, ${total}, ${honoraries},${comissionCode},${legalExpenseCode},${transferCode},${retentionCode},${realInterestCode},${deferredInterestCode},'${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}');`
     console.log(queryStrin)
     connection.query(queryStrin,
         function (err, result) {
