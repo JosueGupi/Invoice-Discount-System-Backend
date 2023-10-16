@@ -114,4 +114,20 @@ app.get("/getOperations", function (req, res) {
     );
 });
 
+app.get("/calendarOperations", function (req, res) {
+    connection.query(`SELECT title, start FROM opcalendarview;`,
+        function (err, result) {
+
+            if (err) {
+                res.json(err);
+                throw err;
+            }
+            else {
+                
+                res.json(result);
+            }
+        }
+    );
+});
+
 module.exports = app;
