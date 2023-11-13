@@ -1,13 +1,9 @@
-const express = require('express');
 const bodyParser = require('body-parser');
 const sgMail = require('@sendgrid/mail');
-const cors = require('cors');
 
 require('dotenv').config();
 
-const app = express();
 app.use(bodyParser.json());
-app.use(cors());
 sgMail.setApiKey('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');
 
 app.post('/send-email', async (req, res) => {
