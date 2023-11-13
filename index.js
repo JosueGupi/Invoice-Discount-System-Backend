@@ -10,13 +10,7 @@ const Operations = require('./routes/Operations')
 const Email = require('./routes/Email')
 
 app.use(express.json())
-const corsOptions = {
-    origin: 'https://inversiones-ellens.netlify.app',
-    optionsSuccessStatus: 200
-};
-
-app.use(cors(corsOptions));
-
+app.use(cors())
 
 app.use('/users', Users)
 app.use('/accounts', Accounts)
