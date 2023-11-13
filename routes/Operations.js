@@ -3,7 +3,7 @@ const { response } = require("express");
 const connection = require("../mysql");
 // refreshing
 app.get("/getLastNumberOP", function (req, res) {
-    connection.query(`SELECT MAX(idOperation) +1 AS opNumber FROM operations;`,
+    connection.query(`CALL SP_GetLastNumberOP();`,
         function (err, result) {
 
             if (err) {
@@ -11,7 +11,7 @@ app.get("/getLastNumberOP", function (req, res) {
                 throw err;
             }
             else {
-                
+
                 res.json(result);
 
             }
@@ -40,15 +40,10 @@ app.post("/createOperation", function (req, res) {
         honoraries = Number(req.body.honoraries),//
         realInterestCode = Number(req.body.realInterestCode),//
         deferredInterestCode = Number(req.body.deferredInterestCode);//
-        let date= new Date();
-        //date = date.toLocaleString("es-US", {timeZone: "America/Costa_Rica"});
+    let date = new Date();
+    //date = date.toLocaleString("es-US", {timeZone: "America/Costa_Rica"});
 
-        
-
-        
-    const queryStrin = `INSERT INTO operations (idClient, SubTotal, Total, Commision, Term, Retention, Fee, Interest, Dollar, TransferCost, idAccountingCodeDeposit, Balance, Honoraries, idAccountingCodeComission, idAccountingCodeLegalExpense, idAccountingCodeTransfer, idAccountingCodeRetention, idAccountingCodeRealInterest, idAccountingCodeDeferredInterest, Date) `+
-    `VALUES (${idClient}, ${subTotal}, ${total}, ${comission}, ${term}, ${retention}, ${fee}, ${interest}, ${dollars}, ${transferCost}, ${opCode}, ${total}, ${honoraries},${comissionCode},${legalExpenseCode},${transferCode},${retentionCode},${realInterestCode},${deferredInterestCode},'${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}');`
-    console.log(queryStrin)
+    const queryStrin = `CALL SP_CreateOperation(${idClient}, ${subTotal}, ${total}, ${comission}, ${term}, ${retention}, ${fee}, ${interest}, ${dollars}, ${transferCost}, ${opCode}, ${total}, ${honoraries},${comissionCode},${legalExpenseCode},${transferCode},${retentionCode},${realInterestCode},${deferredInterestCode},'${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}');`
     connection.query(queryStrin,
         function (err, result) {
 
@@ -58,24 +53,24 @@ app.post("/createOperation", function (req, res) {
             }
             else {
                 const insertedId = result.insertId;
-                for(let i = 0; i < invoices.length; i++) {
+                for (let i = 0; i < invoices.length; i++) {
                     let invoiceNumber = Number(invoices[i].number),
                         amount = Number(invoices[i].amount),
                         date = invoices[i].date,
                         payer = invoices[i].payer;
 
-                    let queryInvoices = `INSERT INTO invoices (idOperation, Number, Entity, Date, Amount)`+
-                    ` VALUES (${insertedId}, ${invoiceNumber}, '${payer}', '${date}', ${amount}); `
+                    let queryInvoices = `CALL SP_InsertInvoice(${insertedId}, ${invoiceNumber}, '${payer}', '${date}', ${amount}); `
                     connection.query(queryInvoices,
                         function (err, result) {
 
-                        if (err) {
-                            res.json(err);
-                            throw err;
-                        }})
+                            if (err) {
+                                res.json(err);
+                                throw err;
+                            }
+                        })
                 }
 
-                for(let i = 0; i < reductions.length; i++) {
+                for (let i = 0; i < reductions.length; i++) {
                     let reductionNumber = Number(reductions[i].number),
                         amount = Number(reductions[i].amount),
                         description = reductions[i].description,
@@ -86,13 +81,14 @@ app.post("/createOperation", function (req, res) {
                     connection.query(queryReductions,
                         function (err, result) {
 
-                        if (err) {
-                            res.json(err);
-                            throw err;
-                        }})
+                            if (err) {
+                                res.json(err);
+                                throw err;
+                            }
+                        })
                 }
 
-                
+
                 res.json(result);
             }
         }
@@ -100,7 +96,7 @@ app.post("/createOperation", function (req, res) {
 });
 
 app.get("/getOperations", function (req, res) {
-    connection.query(`SELECT idOperation FROM operations;`,
+    connection.query(`CALL SP_GetOperations();`,
         function (err, result) {
 
             if (err) {
@@ -108,7 +104,7 @@ app.get("/getOperations", function (req, res) {
                 throw err;
             }
             else {
-                
+
                 res.json(result);
 
             }
@@ -117,7 +113,7 @@ app.get("/getOperations", function (req, res) {
 });
 
 app.get("/calendarOperations", function (req, res) {
-    connection.query(`SELECT title, start FROM opcalendarview;`,
+    connection.query(`CALL SP_GetCalendarOperations();`,
         function (err, result) {
 
             if (err) {
@@ -125,7 +121,7 @@ app.get("/calendarOperations", function (req, res) {
                 throw err;
             }
             else {
-                
+
                 res.json(result);
             }
         }

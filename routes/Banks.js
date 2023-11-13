@@ -5,7 +5,7 @@ const connection = require("../mysql");
 app.get("/getBanks", function (req, res) {
 
 
-    connection.query(`SELECT idBank, Name FROM banks;`,
+    connection.query(`CALL SP_GetBanks();`,
         function (err, result) {
 
             if (err) {
@@ -21,7 +21,7 @@ app.get("/getBanks", function (req, res) {
 app.post("/createBank", function (req, res) {
     const name = req.body.name;
 
-    connection.query(`INSERT INTO banks (Name) VALUES  ('${name}')`,
+    connection.query(`CALL SP_CreateBank('${name}');`,
         function (err, result) {
 
             if (err) {
@@ -39,7 +39,7 @@ app.post("/updateBank", function (req, res) {
         idBank = req.body.idBank;
 
 
-    connection.query(`UPDATE banks SET Name = '${name}' WHERE idBank = ${idBank}`,
+    connection.query(`CALL SP_UpdateBank('${name}', ${idBank});`,
         function (err, result) {
 
             if (err) {
@@ -57,7 +57,7 @@ app.post("/deleteBank", function (req, res) {
     const idBank = req.body.idBank;
 
 
-    connection.query(`DELETE FROM Banks WHERE idBank = ${idBank}`,
+    connection.query(`CALL SP_DeleteBank(${idBank});`,
         function (err, result) {
 
             if (err) {

@@ -3,7 +3,7 @@ const { response } = require("express");
 const connection = require("../mysql");
 // refreshing
 app.get("/getCodes", function (req, res) {
-    connection.query(`SELECT idAccountingCodes, Code, Description, clients.Name, CASE WHEN CodeType = 0 THEN 'Comisión' WHEN CodeType = 1  THEN 'Intereses Reales' WHEN CodeType = 2 THEN 'Intereses Diferidos'  WHEN CodeType = 3 THEN 'Retención' ELSE 'Otros' END AS TypeCode FROM accountingcodes INNER JOIN clients ON accountingcodes.idClient = clients.idClient;`,
+    connection.query(`CALL SP_GetCodes();`,
         function (err, result) {
 
             if (err) {
@@ -25,7 +25,7 @@ app.post("/updateCode", function (req, res) {
         codeType = Number(req.body.codeType);
 
 
-    connection.query(`UPDATE accountingcodes SET idClient = ${idClient}, Code = '${code}', Description = '${description}', CodeType = ${codeType} WHERE idAccountingCodes = ${idAccountingCodes};`,
+    connection.query(`CALL SP_UpdateCode(${idClient}, '${code}', '${description}', ${idAccountingCodes}, ${codeType});`,
         function (err, result) {
 
             if (err) {
@@ -33,7 +33,7 @@ app.post("/updateCode", function (req, res) {
                 throw err;
             }
             else {
-                res.json(result) 
+                res.json(result)
             }
         }
     );
@@ -45,7 +45,7 @@ app.post("/createCode", function (req, res) {
         description = req.body.description,
         codeType = Number(req.body.codeType);
 
-    connection.query(`INSERT INTO accountingcodes (idClient, Code, Description, CodeType) VALUES  (${idClient}, '${code}', '${description}',${codeType});`,
+    connection.query(`CALL SP_CreateCode(${idClient}, '${code}', '${description}', ${codeType});`,
         function (err, result) {
 
             if (err) {
@@ -63,7 +63,7 @@ app.post("/deleteCode", function (req, res) {
     const idAccountingCodes = req.body.idAccountingCodes;
 
 
-    connection.query(`DELETE FROM accountingcodes WHERE idAccountingCodes = ${idAccountingCodes};`,
+    connection.query(`CALL SP_DeleteCode(${idAccountingCodes});`,
         function (err, result) {
 
             if (err) {

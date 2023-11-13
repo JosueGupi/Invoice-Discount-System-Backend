@@ -3,9 +3,9 @@ const { response } = require("express");
 const connection = require("../mysql");
 
 app.get("/getAccounts", function (req, res) {
-    
 
-    connection.query(`SELECT idAccount, Name, Number, BankName FROM accountsview;`,
+
+    connection.query(`CALL SP_GetAccounts();`,
         function (err, result) {
 
             if (err) {
@@ -23,7 +23,7 @@ app.post("/createAccount", function (req, res) {
         number = req.body.number,
         idBank = req.body.idBank
 
-    connection.query(`INSERT INTO accounts (idClient, Number, idBank) VALUES  (${idClient}, '${number}', ${idBank})`,
+    connection.query(`CALL SP_CreateAccounts(${idClient}, '${number}', ${idBank});`,
         function (err, result) {
 
             if (err) {
@@ -42,9 +42,9 @@ app.post("/updateAccount", function (req, res) {
         number = req.body.number,
         idBank = Number(req.body.idBank),
         idAccount = req.body.idAccount;
-        
 
-    connection.query(`UPDATE accounts SET idClient = ${idClient}, Number = '${number}', idBank = ${idBank} WHERE idAccount = ${idAccount}`,
+
+    connection.query(`CALL SP_UpdateAccount(${idClient}, '${number}', ${idBank}, ${idAccount});`,
         function (err, result) {
 
             if (err) {
@@ -60,9 +60,9 @@ app.post("/updateAccount", function (req, res) {
 
 app.post("/deleteAccount", function (req, res) {
     const idAccount = req.body.idAccount;
-        
 
-    connection.query(`DELETE FROM accounts WHERE idAccount = ${idAccount}`,
+
+    connection.query(`CALL SP_DeleteAccount(${idAccount});`,
         function (err, result) {
 
             if (err) {

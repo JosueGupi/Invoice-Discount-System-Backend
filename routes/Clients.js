@@ -5,7 +5,7 @@ const connection = require("../mysql");
 app.get("/getClients", function (req, res) {
 
 
-    connection.query(`SELECT idClient, Name, Email, IdentificationCard FROM clients;`,
+    connection.query(`CALL SP_GetClients();`,
         function (err, result) {
 
             if (err) {
@@ -24,7 +24,7 @@ app.post("/createClient", function (req, res) {
     const email = req.body.email;
     const idenCard = req.body.idenCard;
 
-    connection.query(`INSERT INTO clients (Name, Email, IdentificationCard) VALUES  ('${name}', '${email}', '${idenCard}')`,
+    connection.query(`CALL SP_CreateClient('${name}', '${email}', '${idenCard}');`,
         function (err, result) {
 
             if (err) {
@@ -41,10 +41,10 @@ app.post("/updateClient", function (req, res) {
     const name = req.body.name;
     const email = req.body.email;
     const idenCard = req.body.idenCard,
-            idClient = req.body.idClient;
+        idClient = req.body.idClient;
 
 
-    connection.query(`UPDATE clients SET Name = '${name}', Email = '${email}', IdentificationCard = '${idenCard}'  WHERE idClient = ${idClient}`,
+    connection.query(`CALL SP_UpdateClient('${name}', '${email}', '${idenCard}', ${idClient});`,
         function (err, result) {
 
             if (err) {
@@ -62,7 +62,7 @@ app.post("/deleteClient", function (req, res) {
     const idClient = req.body.idClient;
 
 
-    connection.query(`DELETE FROM clients WHERE idClient = ${idClient}`,
+    connection.query(`CALL SP_DeleteClient(${idClient});`,
         function (err, result) {
 
             if (err) {

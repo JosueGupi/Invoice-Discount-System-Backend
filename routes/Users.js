@@ -5,9 +5,9 @@ const connection = require("../mysql");
 app.post("/login", function (req, res) {
     const password = req.body.password,
         email = req.body.email;
-    connection.query(`SELECT idUser, Name, Password FROM users WHERE Email = '${email}' AND Password = '${password}';`,
+    connection.query(`CALL SP_Login('${email}', '${password}');`,
         function (err, result) {
-            
+
             if (err) {
                 res.json(err);
                 throw err;
@@ -21,7 +21,7 @@ app.post("/login", function (req, res) {
 app.post("/evalEmail", function (req, res) {
     const email = req.body.email;
     console.log(req);
-    connection.query(`SELECT  idUser, Name FROM users WHERE Email = '${email}';`,
+    connection.query(`CALL SP_EvalEmail('${email}');`,
         function (err, result) {
             console.log(result);
             if (err) {
@@ -43,7 +43,7 @@ app.post("/evalMatrix", function (req, res) {
         cord2Showed = req.body.cord2Showed,
         cord3Showed = req.body.cord3Showed;
 
-    connection.query(`SELECT  Matrix FROM usersmatrix WHERE idUser = ${idUser};`,
+    connection.query(`CALL SP_EvalMatrix(${idUser});`,
         function (err, result) {
 
             if (err) {
@@ -70,7 +70,7 @@ app.post("/changePassword", function (req, res) {
     const idUser = req.body.idUser,
         password = req.body.password
 
-    connection.query(`UPDATE users SET Password = '${password}' WHERE idUser = ${idUser};`,
+    connection.query(`CALL SP_ChangePassword ('${password}' WHERE idUser = ${idUser});`,
         function (err, result) {
 
             if (err) {
@@ -84,9 +84,9 @@ app.post("/changePassword", function (req, res) {
     );
 });
 app.get("/getUsers", function (req, res) {
-    
 
-    connection.query(`SELECT idUser, Name, Email, Password FROM users`,
+
+    connection.query(`CALL SP_GetUsers();`,
         function (err, result) {
 
             if (err) {
@@ -104,7 +104,7 @@ app.post("/createUser", function (req, res) {
         email = req.body.email,
         password = req.body.password
 
-    connection.query(`INSERT INTO users (Name, Email, Password) VALUES  ('${name}', '${email}', '${password}')`,
+    connection.query(`CALL SP_CreateUser('${name}', '${email}', '${password}');`,
         function (err, result) {
 
             if (err) {
@@ -121,9 +121,9 @@ app.post("/updateUser", function (req, res) {
     const name = req.body.name,
         email = req.body.email,
         idUser = req.body.idUser;
-        
 
-    connection.query(`UPDATE users SET Name = '${name}', Email = '${email}' WHERE idUser = ${idUser}`,
+
+    connection.query(`CALL SP_UpdateUser('${name}', '${email}', ${idUser});`,
         function (err, result) {
 
             if (err) {
@@ -139,9 +139,9 @@ app.post("/updateUser", function (req, res) {
 
 app.post("/deleteUser", function (req, res) {
     const idUser = req.body.idUser;
-        
 
-    connection.query(`DELETE FROM users WHERE idUser = ${idUser}`,
+
+    connection.query(`CALL SP_DeleteUser(${idUser});`,
         function (err, result) {
 
             if (err) {
