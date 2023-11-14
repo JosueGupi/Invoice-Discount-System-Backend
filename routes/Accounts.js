@@ -13,7 +13,7 @@ app.get("/getAccounts", function (req, res) {
                 throw err;
             }
             else {
-                res.json(result)
+                res.json(result[0])
             }
         }
     );
@@ -31,7 +31,7 @@ app.post("/createAccount", function (req, res) {
                 throw err;
             }
             else {
-                res.json(result)
+                res.json(result[0])
             }
         }
     );
@@ -52,7 +52,7 @@ app.post("/updateAccount", function (req, res) {
                 throw err;
             }
             else {
-                res.json(result)
+                res.json(result[0])
             }
         }
     );
@@ -70,7 +70,7 @@ app.post("/deleteAccount", function (req, res) {
                 throw error;
             }
             else {
-                res.json(result)
+                res.json(result[0])
             }
         }
     );

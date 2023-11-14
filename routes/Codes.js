@@ -11,7 +11,7 @@ app.get("/getCodes", function (req, res) {
                 throw err;
             }
             else {
-                res.json(result);
+                res.json(result[0]);
             }
         }
     );
@@ -33,7 +33,7 @@ app.post("/updateCode", function (req, res) {
                 throw err;
             }
             else {
-                res.json(result)
+                res.json(result[0])
             }
         }
     );
@@ -53,7 +53,7 @@ app.post("/createCode", function (req, res) {
                 throw err;
             }
             else {
-                res.json(result)
+                res.json(result[0])
             }
         }
     );
@@ -71,7 +71,7 @@ app.post("/deleteCode", function (req, res) {
                 throw err;
             }
             else {
-                res.json(result)
+                res.json(result[0])
             }
         }
     );
@@ -86,7 +86,7 @@ app.post("/getClientCodes", function (req, res) {
                 throw err;
             }
             else {
-                res.json(result);
+                res.json(result[0]);
             }
         }
     );

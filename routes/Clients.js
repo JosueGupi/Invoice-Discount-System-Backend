@@ -13,7 +13,7 @@ app.get("/getClients", function (req, res) {
                 throw err;
             }
             else {
-                res.json(result[0])
+                res.json(result[0][0])
             }
         }
     );
@@ -32,7 +32,7 @@ app.post("/createClient", function (req, res) {
                 throw err;
             }
             else {
-                res.json(result)
+                res.json(result[0])
             }
         }
     );
@@ -52,7 +52,7 @@ app.post("/updateClient", function (req, res) {
                 throw err;
             }
             else {
-                res.json(result)
+                res.json(result[0])
             }
         }
     );
@@ -70,7 +70,7 @@ app.post("/deleteClient", function (req, res) {
                 throw err;
             }
             else {
-                res.json(result)
+                res.json(result[0])
             }
         }
     );

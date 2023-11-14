@@ -29,7 +29,7 @@ app.post("/evalEmail", function (req, res) {
                 throw err;
             }
 
-            res.json(result);
+            res.json(result[0]);
         }
     );
 });
@@ -78,7 +78,7 @@ app.post("/changePassword", function (req, res) {
                 throw err;
             }
             else {
-                res.json(result)
+                res.json(result[0])
             }
         }
     );
@@ -94,7 +94,7 @@ app.get("/getUsers", function (req, res) {
                 throw err;
             }
             else {
-                res.json(result)
+                res.json(result[0])
             }
         }
     );
@@ -112,7 +112,7 @@ app.post("/createUser", function (req, res) {
                 throw err;
             }
             else {
-                res.json(result)
+                res.json(result[0])
             }
         }
     );
@@ -131,7 +131,7 @@ app.post("/updateUser", function (req, res) {
                 throw err;
             }
             else {
-                res.json(result)
+                res.json(result[0])
             }
         }
     );
@@ -149,7 +149,7 @@ app.post("/deleteUser", function (req, res) {
                 throw error;
             }
             else {
-                res.json(result)
+                res.json(result[0])
             }
         }
     );

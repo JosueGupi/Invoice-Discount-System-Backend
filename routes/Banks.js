@@ -13,7 +13,7 @@ app.get("/getBanks", function (req, res) {
                 throw err;
             }
             else {
-                res.json(result)
+                res.json(result[0])
             }
         }
     );
@@ -29,7 +29,7 @@ app.post("/createBank", function (req, res) {
                 throw err;
             }
             else {
-                res.json(result)
+                res.json(result[0])
             }
         }
     );
@@ -47,7 +47,7 @@ app.post("/updateBank", function (req, res) {
                 throw err;
             }
             else {
-                res.json(result)
+                res.json(result[0])
             }
         }
     );
@@ -65,7 +65,7 @@ app.post("/deleteBank", function (req, res) {
                 throw error;
             }
             else {
-                res.json(result)
+                res.json(result[0])
             }
         }
     );

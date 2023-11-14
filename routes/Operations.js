@@ -12,7 +12,7 @@ app.get("/getLastNumberOP", function (req, res) {
             }
             else {
 
-                res.json(result);
+                res.json(result[0]);
 
             }
         }
@@ -89,7 +89,7 @@ app.post("/createOperation", function (req, res) {
                 }
 
 
-                res.json(result);
+                res.json(result[0]);
             }
         }
     );
@@ -105,7 +105,7 @@ app.get("/getOperations", function (req, res) {
             }
             else {
 
-                res.json(result);
+                res.json(result[0]);
 
             }
         }
@@ -122,7 +122,7 @@ app.get("/calendarOperations", function (req, res) {
             }
             else {
 
-                res.json(result);
+                res.json(result[0]);
             }
         }
     );
