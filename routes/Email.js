@@ -12,6 +12,7 @@ sgMail.setApiKey('SG.3lI7bcV8QTi56KJBdFFdsw.RSpBxwQ68v0r45qq-l0YUZ_sU_E7uKELsXL0
 app.post('/send-email', async (req, res) => {
     console.log('entre');
     const { numero, fecha, monto, pagador } = req.body;
+    console.log(numero, fecha, monto, pagador);
 
     const msg = {
         to: 'sistemaInverEllens@gmail.com',
