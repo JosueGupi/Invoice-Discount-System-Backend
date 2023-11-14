@@ -1,3 +1,6 @@
+const app = require("express").Router();
+const { response } = require("express");
+const connection = require("../mysql");
 const bodyParser = require('body-parser');
 const sgMail = require('@sendgrid/mail');
 
@@ -29,3 +32,5 @@ app.post('/send-email', async (req, res) => {
         res.status(500).send('Error sending email');
     }
 });
+
+module.exports = app;
