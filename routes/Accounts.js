@@ -5,7 +5,7 @@ const connection = require("../mysql");
 app.get("/getAccounts", function (req, res) {
 
 
-    connection.query(`CALL SP_GetAccounts();`,
+    connection.query(`CALL SP_GetAllAccounts();`,
         function (err, result) {
 
             if (err) {
