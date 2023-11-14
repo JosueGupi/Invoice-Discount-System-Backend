@@ -19,7 +19,14 @@ app.post('/send-email', async (req, res) => {
         from: 'sistemaInverEllens@gmail.com',
         subject: 'Nueva Cesión Generada',
         templateId: 'd-8eeba631a8984506a28c828741da4c5e',
-        dynamicTemplateData: { numero, fecha, monto, pagador }
+        dynamicTemplateData: {
+            factura: {
+                numero,
+                fecha,
+                monto,
+                pagador
+            }
+        }
     };
 
     try {
