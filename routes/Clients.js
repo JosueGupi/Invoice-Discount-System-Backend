@@ -13,7 +13,7 @@ app.get("/getClients", function (req, res) {
                 throw err;
             }
             else {
-                res.json(result[0][0])
+                res.json(result[0])
             }
         }
     );
