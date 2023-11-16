@@ -29,7 +29,7 @@ app.get("/getMonthlyInterest", function (req, res) {
             }
             else {
                 const monthlyInterest = getMonthsAndYearsList(result[0]);
-                res.json(monthlyInterest[0])
+                res.json(monthlyInterest)
             }
         }
     );
