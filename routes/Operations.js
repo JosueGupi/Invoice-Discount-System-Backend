@@ -96,6 +96,7 @@ app.post("/createOperation", function (req, res) {
     );
 });
 
+
 app.get("/getOperations", function (req, res) {
     connection.query(`CALL SP_GetOperations();`,
         function (err, result) {
