@@ -25,5 +25,5 @@ app.use('/charts', Charts)
 app.use('/tables', Tables)
 
 app.listen(process.env.PORT || 3001, () => {
-    console.log('Servers Run')
+    console.log('Servers Run') 
 });
