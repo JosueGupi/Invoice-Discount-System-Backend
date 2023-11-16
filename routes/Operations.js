@@ -43,8 +43,27 @@ app.post("/createOperation", function (req, res) {
         deferredInterestCode = Number(req.body.deferredInterestCode);//
     let date = new Date();
     //date = date.toLocaleString("es-US", {timeZone: "America/Costa_Rica"});
+    const queryStrin = `CALL SP_InsertOperation(
+        ${idClient}, 
+        ${subTotal}, 
+        ${total}, 
+        ${comission}, 
+        ${term}, 
+        ${retention}, 
+        ${fee}, 
+        ${interest}, 
+        ${dollars}, 
+        ${transferCost}, 
+        ${opCode}, 
+        ${honoraries},
+        ${comissionCode},
+        ${legalExpenseCode},
+        ${transferCode},
+        ${retentionCode},
+        ${realInterestCode},
+        ${deferredInterestCode},
+        '${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}');`
 
-    const queryStrin = `CALL SP_InsertOperation(${idClient}, ${subTotal}, ${total}, ${comission}, ${term}, ${retention}, ${fee}, ${interest}, ${dollars}, ${transferCost}, ${opCode}, ${honoraries},${comissionCode},${legalExpenseCode},${transferCode},${retentionCode},${realInterestCode},${deferredInterestCode},'${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}');`
     connection.query(queryStrin,
         function (err, result) {
 
