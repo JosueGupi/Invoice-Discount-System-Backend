@@ -128,4 +128,20 @@ app.get("/calendarOperations", function (req, res) {
     );
 });
 
+app.get("/operationDetail", function (req, res) {
+    connection.query(`CALL SP_GetOperationDetail();`,
+        function (err, result) {
+
+            if (err) {
+                res.json(err);
+                throw err;
+            }
+            else {
+
+                res.json(result[0]);
+            }
+        }
+    );
+});
+
 module.exports = app;
