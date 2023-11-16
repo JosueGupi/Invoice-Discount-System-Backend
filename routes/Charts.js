@@ -28,8 +28,10 @@ app.get("/getMonthlyInterest", function (req, res) {
                 throw err;
             }
             else {
+                console.log(result[0]);
                 const monthlyInterest = getMonthsAndYearsList(result[0]);
-                res.json(monthlyInterest)
+                console.log(monthlyInterest);
+                res.json(monthlyInterest);
             }
         }
     );
