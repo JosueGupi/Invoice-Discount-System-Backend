@@ -1,6 +1,4 @@
-require('../Utils.js');
-
-
+const utils = require('../Utils.js');
 const app = require("express").Router();
 const { response } = require("express");
 const connection = require("../mysql");
