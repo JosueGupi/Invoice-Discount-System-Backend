@@ -96,3 +96,5 @@ function getMonthsAndYearsList(table) {
 }
 
 //monthsAndYearsList contiene = [{month:'', year:"", interest:""},{month:'', year:"", interest:""},{month:'', year:"", interest:""}]
+
+module.exports.getMonthsAndYearsList = getMonthsAndYearsList;
