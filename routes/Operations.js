@@ -19,6 +19,7 @@ app.get("/getLastNumberOP", function (req, res) {
     );
 });
 
+
 app.post("/createOperation", function (req, res) {
     const idClient = Number(req.body.idClient),//
         subTotal = Number(req.body.subTotal),//
