@@ -67,7 +67,8 @@ app.post("/createOperation", function (req, res) {
         ${deferredInterestCode},
         '${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}',
         ${feeCode},
-        ${factSum});`
+        ${factSum});` 
+        console.log(queryStrin)
 
     connection.query(queryStrin,
         function (err, result) {
