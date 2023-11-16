@@ -28,7 +28,7 @@ app.get("/getMonthlyInterest", function (req, res) {
             }
             else {
                 console.log(result[0]);
-                const monthlyInterest = getMonthsAndYearsList(result[0]);
+                const monthlyInterest = utils.getMonthsAndYearsList(result[0]);
                 console.log(monthlyInterest);
                 res.json(monthlyInterest);
             }
