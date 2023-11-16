@@ -40,11 +40,14 @@ app.post("/createOperation", function (req, res) {
         reductions = req.body.reductions,//
         honoraries = Number(req.body.honoraries),//
         realInterestCode = Number(req.body.realInterestCode),//
-        deferredInterestCode = Number(req.body.deferredInterestCode);//
-    let date = new Date();
+        deferredInterestCode = Number(req.body.deferredInterestCode),//
+        feeCode = Number(req.body.feeCode),
+        factSum = Number(req.body.factSum);//
+        let date = new Date();
+
     //date = date.toLocaleString("es-US", {timeZone: "America/Costa_Rica"});
 
-    const queryStrin = `CALL SP_InsertOperation(${idClient}, ${subTotal}, ${total}, ${comission}, ${term}, ${retention}, ${fee}, ${interest}, ${dollars}, ${transferCost}, ${opCode}, ${honoraries},${comissionCode},${legalExpenseCode},${transferCode},${retentionCode},${realInterestCode},${deferredInterestCode},'${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}');`
+    const queryStrin = `CALL SP_InsertOperation(${idClient}, ${subTotal}, ${total}, ${comission}, ${term}, ${retention}, ${fee}, ${interest}, ${dollars}, ${transferCost}, ${opCode}, ${honoraries},${comissionCode},${legalExpenseCode},${transferCode},${retentionCode},${realInterestCode},${deferredInterestCode},'${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}',${feeCode},${factSum});`
     connection.query(queryStrin,
         function (err, result) {
 
@@ -53,7 +56,9 @@ app.post("/createOperation", function (req, res) {
                 throw err;
             }
             else {
-                const insertedId = result.insertId;
+                
+                const insertedId = result[0][0].lastIdOperations;
+                
                 for (let i = 0; i < invoices.length; i++) {
                     let invoiceNumber = Number(invoices[i].number),
                         amount = Number(invoices[i].amount),
@@ -70,6 +75,7 @@ app.post("/createOperation", function (req, res) {
                             }
                         })
                 }
+            
 
                 for (let i = 0; i < reductions.length; i++) {
                     let reductionNumber = Number(reductions[i].number),
@@ -77,8 +83,7 @@ app.post("/createOperation", function (req, res) {
                         description = reductions[i].description,
                         code = reductions[i].code;
 
-                    let queryReductions = `CALL SP_InsertReductions(${insertedId}, ${reductionNumber}, '${code}', ${amount}, '${description}');
-                    `
+                    let queryReductions = `CALL SP_InsertReductions(${insertedId}, ${reductionNumber}, '${code}', ${amount}, '${description}');`
                     connection.query(queryReductions,
                         function (err, result) {
 
