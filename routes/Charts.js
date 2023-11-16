@@ -1,4 +1,5 @@
-import '../Utils.js'
+require('../Utils.js');
+
 
 const app = require("express").Router();
 const { response } = require("express");
