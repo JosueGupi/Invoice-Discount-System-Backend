@@ -25,7 +25,7 @@ app.post("/updateCode", function (req, res) {
         codeType = Number(req.body.codeType);
 
 
-    connection.query(`CALL SP_UpdateCode(${idClient}, '${code}', '${description}', ${idAccountingCodes}, ${codeType});`,
+    connection.query(`CALL SP_UpdateCode(${idClient}, '${code}', '${description}', ${codeType}, ${idAccountingCodes});`,
         function (err, result) {
 
             if (err) {
