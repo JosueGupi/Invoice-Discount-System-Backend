@@ -19,6 +19,8 @@ app.get("/getClients", function (req, res) {
     );
 });
 
+
+
 app.post("/createClient", function (req, res) {
     const name = req.body.name;
     const email = req.body.email;
@@ -63,6 +65,23 @@ app.post("/deleteClient", function (req, res) {
 
 
     connection.query(`CALL SP_DeleteClient(${idClient});`,
+        function (err, result) {
+
+            if (err) {
+                res.json(err);
+                throw err;
+            }
+            else {
+                res.json(result[0])
+            }
+        }
+    );
+});
+
+app.get("/getFunctionalClients", function (req, res) {
+
+
+    connection.query(`CALL SP_GetFunctionalClients();`,
         function (err, result) {
 
             if (err) {
