@@ -128,9 +128,8 @@ app.get("/calendarOperations", function (req, res) {
     );
 });
 
-app.get("/operationDetail", function (req, res) {
-    //const idOperation = Number(req.body.idOperation);
-    const { idOperation } = Number(req.body);
+app.post("/operationDetail", function (req, res) {
+    const idOperation = req.body.idOperation;
     connection.query(`CALL SP_GetOperationDetail(${idOperation});`,
         function (err, result) {
 
