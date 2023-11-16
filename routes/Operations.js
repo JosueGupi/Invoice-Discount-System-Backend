@@ -129,7 +129,8 @@ app.get("/calendarOperations", function (req, res) {
 });
 
 app.get("/operationDetail", function (req, res) {
-    connection.query(`CALL SP_GetOperationDetail();`,
+    const idOperation = Number(req.body.idOperation);
+    connection.query(`CALL SP_GetOperationDetail(${idOperation});`,
         function (err, result) {
 
             if (err) {
