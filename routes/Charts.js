@@ -23,6 +23,7 @@ app.get("/getMonthlyInterest", function (req, res) {
         function (err, result) {
 
             if (err) {
+                console.log("error :p")
                 res.json(err);
                 throw err;
             }
@@ -35,5 +36,6 @@ app.get("/getMonthlyInterest", function (req, res) {
         }
     );
 });
+
 
 module.exports = app;
