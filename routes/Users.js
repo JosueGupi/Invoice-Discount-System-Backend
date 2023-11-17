@@ -57,7 +57,16 @@ app.post("/evalMatrix", function (req, res) {
             }
             else {
                 const matrix = result[0].Matrix;
-
+                console.log(matrix);
+                console.log(cord1Showed[0], cord1Showed[1] - 1)
+                console.log(cord1)
+                console.log("-----------")
+                console.log(matrix[cord2Showed[0]][cord2Showed[1] - 1])
+                console.log(cord2)
+                console.log("-----------")
+                console.log(matrix[cord3Showed[0]][cord3Showed[1] - 1])
+                console.log(cord3)
+                console.log("-----------")
                 if (matrix[cord1Showed[0]][cord1Showed[1] - 1] === cord1 && matrix[cord2Showed[0]][cord2Showed[1] - 1] === cord2
                     && matrix[cord3Showed[0]][cord3Showed[1] - 1] === cord3) {
                     res.json(0)
