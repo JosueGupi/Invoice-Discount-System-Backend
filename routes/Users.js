@@ -188,19 +188,27 @@ function generateRandomMatrix(size) {
 }
 
 function generateHTMLTable(data) {
-    let html = '<table><tr>';
+    let html = `
+    <table style="border-collapse: collapse; width: 100%;">
+        <tr>`;
+
+    // Encabezados de la tabla
     for (const key in data) {
-        html += `<th>${key}</th>`;
+        html += `<th style="border: 1px solid #ddd; padding: 8px; text-align: left; background-color: #f2f2f2;">${key}</th>`;
     }
-    html += '</tr>';
+
+    html += `</tr>`;
+
+    // Filas de la tabla
     for (let i = 0; i < data[Object.keys(data)[0]].length; i++) {
-        html += '<tr>';
+        html += `<tr style="${i % 2 === 0 ? 'background-color: #f2f2f2;' : ''}">`;
         for (const key in data) {
-            html += `<td>${data[key][i]}</td>`;
+            html += `<td style="border: 1px solid #ddd; padding: 8px;">${data[key][i]}</td>`;
         }
-        html += '</tr>';
+        html += `</tr>`;
     }
-    html += '</table>';
+
+    html += `</table>`;
     return html;
 }
 
