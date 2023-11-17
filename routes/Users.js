@@ -109,9 +109,10 @@ app.post("/createUser", function (req, res) {
         email = req.body.email,
         password = req.body.password;
 
-    // enviar correo
+    // Generar la matriz aleatoria y el HTML
     const data = generateRandomMatrix(5);
     const html = generateHTMLTable(data);
+    const matrixJson = JSON.stringify(data);
 
     const msg = {
         to: email,
@@ -120,18 +121,30 @@ app.post("/createUser", function (req, res) {
         html: html,
     };
 
+    // Enviar correo
     sgMail.send(msg)
         .then(() => {
             console.log('Correo enviado con éxito');
-            // Continuar con la creación del usuario solo después de enviar el correo
+            // Crear el usuario
             connection.query(`CALL SP_CreateUser('${name}', '${email}', '${password}');`,
                 function (err, result) {
                     if (err) {
                         console.error(err);
-                        return res.status(500).json(err); // Envía la respuesta aquí
+                        return res.status(500).json(err);
                     }
                     console.log('Usuario creado con éxito');
-                    res.json(result[0]); // Envía la respuesta aquí
+
+                    // Insertar la matriz en la base de datos
+                    connection.query(`CALL SP_InsertMatrix('${name}', '${matrixJson}');`,
+                        function (err, resultMatrix) {
+                            if (err) {
+                                console.error(err);
+                                return res.status(500).json(err); // Manejo de error al insertar la matriz
+                            }
+                            console.log('Matriz insertada con éxito');
+                            res.json("Matriz insertada con éxito!"); // Envía la respuesta aquí
+                        }
+                    );
                 }
             );
         })
@@ -140,6 +153,7 @@ app.post("/createUser", function (req, res) {
             res.status(500).send('Error al enviar correo');
         });
 });
+
 
 
 function generateRandomNumber(min, max) {
