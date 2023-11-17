@@ -156,24 +156,32 @@ function generateRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function generateRandomLetter() {
+function generateUniqueRandomLetters(size) {
     const letters = 'ABCDE';
-    return letters.charAt(Math.floor(Math.random() * letters.length));
+    let randomLetters = [];
+    while (randomLetters.length < size) {
+        const letter = letters.charAt(Math.floor(Math.random() * letters.length));
+        if (!randomLetters.includes(letter)) {
+            randomLetters.push(letter);
+        }
+    }
+    return randomLetters;
 }
 
 function generateRandomMatrix(size) {
     const matrix = {};
-    for (let i = 0; i < size; i++) {
-        const letter = generateRandomLetter();
-        if (!matrix[letter]) {
-            matrix[letter] = [];
-        }
-        for (let j = 0; j < 5; j++) {
+    const uniqueLetters = generateUniqueRandomLetters(size);
+
+    uniqueLetters.forEach(letter => {
+        matrix[letter] = [];
+        for (let i = 0; i < 5; i++) {
             matrix[letter].push(generateRandomNumber(1, 99));
         }
-    }
+    });
+
     return matrix;
 }
+
 function generateHTMLTable(data) {
     let html = '<table><tr>';
     for (const key in data) {
