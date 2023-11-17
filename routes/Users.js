@@ -103,16 +103,15 @@ app.get("/getUsers", function (req, res) {
         }
     );
 });
+
 app.post("/createUser", function (req, res) {
     const name = req.body.name,
         email = req.body.email,
-        password = req.body.password
+        password = req.body.password;
 
     // enviar correo
     const data = generateRandomMatrix(5);
-    console.log(data)
     const html = generateHTMLTable(data);
-    console.log(html)
 
     const msg = {
         to: email,
@@ -121,36 +120,27 @@ app.post("/createUser", function (req, res) {
         html: html,
     };
 
-    sgMail
-        .send(msg)
+    sgMail.send(msg)
         .then(() => {
             console.log('Correo enviado con éxito');
-            res.send('Correo enviado con éxito');
+            // Continuar con la creación del usuario solo después de enviar el correo
+            connection.query(`CALL SP_CreateUser('${name}', '${email}', '${password}');`,
+                function (err, result) {
+                    if (err) {
+                        console.error(err);
+                        return res.status(500).json(err); // Envía la respuesta aquí
+                    }
+                    console.log('Usuario creado con éxito');
+                    res.json(result[0]); // Envía la respuesta aquí
+                }
+            );
         })
         .catch((error) => {
             console.error(error.toString());
             res.status(500).send('Error al enviar correo');
         });
-
-
-
-
-    connection.query(`CALL SP_CreateUser('${name}', '${email}', '${password}');`,
-        function (err, result) {
-
-            if (err) {
-                res.json(err);
-                throw err;
-            }
-            else {
-                res.json(result[0])
-            }
-        }
-    );
-
-    // agregar a la base la matriz
-
 });
+
 
 function generateRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
