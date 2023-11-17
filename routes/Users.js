@@ -77,7 +77,7 @@ app.post("/changePassword", function (req, res) {
     const idUser = req.body.idUser,
         password = req.body.password
 
-    connection.query(`CALL SP_ChangePassword ('${password}' WHERE idUser = ${idUser});`,
+    connection.query(`CALL SP_ChangePassword('${password}', '${idUser}');`,
         function (err, result) {
 
             if (err) {
