@@ -48,7 +48,6 @@ app.post("/evalMatrix", function (req, res) {
         cord1Showed = req.body.cord1Showed,
         cord2Showed = req.body.cord2Showed,
         cord3Showed = req.body.cord3Showed;
-
     connection.query(`CALL SP_EvalMatrix(${idUser});`,
         function (err, result) {
 
@@ -57,19 +56,11 @@ app.post("/evalMatrix", function (req, res) {
                 throw err;
             }
             else {
-                const matrix = result[0].Matrix;
-                console.log(matrix);
-                console.log(cord1Showed[0], cord1Showed[1] - 1)
-                console.log(cord1)
-                console.log("-----------")
-                console.log(matrix[cord2Showed[0]][cord2Showed[1] - 1])
-                console.log(cord2)
-                console.log("-----------")
-                console.log(matrix[cord3Showed[0]][cord3Showed[1] - 1])
-                console.log(cord3)
-                console.log("-----------")
+
+                const matrix = result[0][0].Matrix;
                 if (matrix[cord1Showed[0]][cord1Showed[1] - 1] === cord1 && matrix[cord2Showed[0]][cord2Showed[1] - 1] === cord2
                     && matrix[cord3Showed[0]][cord3Showed[1] - 1] === cord3) {
+                    console.log("0")
                     res.json(0)
                 }
                 else {
