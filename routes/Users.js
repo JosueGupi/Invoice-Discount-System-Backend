@@ -202,6 +202,7 @@ function generateHTMLTable(data) {
     return html;
 }
 
+
 app.post("/updateUser", function (req, res) {
     const name = req.body.name,
         email = req.body.email,
