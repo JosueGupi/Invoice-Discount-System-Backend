@@ -239,4 +239,5 @@ app.post("/deleteUser", function (req, res) {
         }
     );
 });
+
 module.exports = app;
