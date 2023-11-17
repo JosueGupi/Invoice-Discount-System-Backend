@@ -161,21 +161,11 @@ function generateRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function generateUniqueRandomLetters(size) {
-    const letters = 'ABCDE';
-    let randomLetters = [];
-    while (randomLetters.length < size) {
-        const letter = letters.charAt(Math.floor(Math.random() * letters.length));
-        if (!randomLetters.includes(letter)) {
-            randomLetters.push(letter);
-        }
-    }
-    return randomLetters;
-}
+
 
 function generateRandomMatrix(size) {
     const matrix = {};
-    const uniqueLetters = generateUniqueRandomLetters(size);
+    const uniqueLetters = ['A', 'B', 'C', 'D', 'E'];
 
     uniqueLetters.forEach(letter => {
         matrix[letter] = [];
