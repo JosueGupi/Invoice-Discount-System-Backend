@@ -15,10 +15,12 @@ app.post("/login", function (req, res) {
         function (err, result) {
 
             if (err) {
+                console.log("nooo :(")
                 res.json(err);
                 throw err;
             }
-
+            console.log("si :)")
+            console.log(result[0])
             res.json(result[0]);
         }
     );
