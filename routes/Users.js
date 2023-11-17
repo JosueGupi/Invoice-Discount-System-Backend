@@ -71,6 +71,7 @@ app.post("/evalMatrix", function (req, res) {
         }
     );
 });
+
 app.post("/changePassword", function (req, res) {
     const idUser = req.body.idUser,
         password = req.body.password
