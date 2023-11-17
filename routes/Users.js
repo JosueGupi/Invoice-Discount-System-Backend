@@ -90,6 +90,7 @@ app.post("/changePassword", function (req, res) {
         }
     );
 });
+
 app.get("/getUsers", function (req, res) {
 
     connection.query(`CALL SP_GetUsers();`,
