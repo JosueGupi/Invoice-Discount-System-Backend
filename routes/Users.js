@@ -157,7 +157,7 @@ function generateRandomNumber(min, max) {
 }
 
 function generateRandomLetter() {
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const letters = 'ABCDE';
     return letters.charAt(Math.floor(Math.random() * letters.length));
 }
 
@@ -169,7 +169,7 @@ function generateRandomMatrix(size) {
             matrix[letter] = [];
         }
         for (let j = 0; j < 5; j++) {
-            matrix[letter].push(generateRandomNumber(1, 25));
+            matrix[letter].push(generateRandomNumber(1, 99));
         }
     }
     return matrix;
