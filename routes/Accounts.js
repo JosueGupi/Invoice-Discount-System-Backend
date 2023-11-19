@@ -36,6 +36,7 @@ app.post("/createAccount", function (req, res) {
         }
     );
 });
+
 app.post("/updateAccount", function (req, res) {
     console.log(req.body);
     const idClient = Number(req.body.idClient),
