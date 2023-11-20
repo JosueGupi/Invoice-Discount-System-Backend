@@ -7,7 +7,7 @@ const sgMail = require('@sendgrid/mail');
 require('dotenv').config();
 
 app.use(bodyParser.json());
-sgMail.setApiKey('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');
+sgMail.setApiKey('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');
 
 
 app.post('/send-email', async (req, res) => {
