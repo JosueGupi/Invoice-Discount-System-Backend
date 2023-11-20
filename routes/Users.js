@@ -6,7 +6,7 @@ const sgMail = require('@sendgrid/mail');
 
 const pdf = require('html-pdf');
 const fs = require('fs');
-
+const utils = require('./Utils');
 app.use(bodyParser.json());
 
 sgMail.setApiKey('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');
@@ -248,30 +248,57 @@ app.post("/deleteUser", function (req, res) {
     );
 });
 
-app.get("/sendEmailOP", async function (req, res) {
+app.post("/sendEmailOP", async function (req, res) {
 
-    const idOperation = 33//req.body.idOperation;
+    const idOperation = req.body.idOperation;
     // HTML que quieres convertir a PDF
-    const htmlContent = `<p>TEXTO</p>`;
 
     var sumFactVal = 0; sumDeductionsVal = 0;
 
     const opDetails = (await connection.promise().query(`CALL SP_GetOpDetails(${idOperation});`))[0][0]
-    const invoices = (await connection.promise().query(`CALL SP_GetOpDeductions(${idOperation});`))[0][0]
-    const deductions = (await connection.promise().query(`CALL SP_GetOpInvoices(${idOperation});`))[0][0]
+    const deductions = (await connection.promise().query(`CALL SP_GetOpDeductions(${idOperation});`))[0][0]
+    const invoices = (await connection.promise().query(`CALL SP_GetOpInvoices(${idOperation});`))[0][0]
+    var message = utils.pdfHeader(opDetails[0].CardId, opDetails[0].opNumber) + utils.invoicesHeader(opDetails[0].ClientName, opDetails[0].opNumber, opDetails[0].Date);
+
+    for (let i = 0; i < invoices.length; i++) {
+        
+        sumFactVal += invoices[i].Amount;
+        let invoice = invoices[i];
+        message += utils.invoicesBoddy(invoice.Number, invoice.Entity, invoice.Date, invoice.Amount);
+    }
+    let totalInterest =  ((((opDetails[0].Interes / 100) / 30) * opDetails[0].Term * sumFactVal)).toFixed(2)
+    message += utils.subTotal(sumFactVal) + utils.retentionValue(opDetails[0].Retention, opDetails[0].RetentionCode, sumFactVal)
+        + utils.comissionValue(opDetails[0].Comission, opDetails[0].ComissionCode, sumFactVal)
+        + utils.legalExpenses(opDetails[0].LegalExpenses, opDetails[0].LegalExpenseCode, ((totalInterest)), opDetails[0].SubTotal, opDetails[0].TransferCost)
+        + utils.monthInteretsHeader(opDetails[0].Date, opDetails[0].Date, opDetails[0].Term);
+
+    
+    let interestList = utils.obtainDates(opDetails[0].Term, opDetails[0].Date);
+    console.log('list',interestList)
+    let index = 1;
+    for (let i = 0; i < interestList.length; i++) {
+        let monthInterest = (interestList[i].days / opDetails[0].Term) * totalInterest;
+        let code =  index === 1 ? opDetails[0].RealInteresCode : opDetails[0].DeferredInterestCode;
+        let totalForMonth = i == interestList.length-1 ? totalInterest : null;
+        message += utils.monthInteretsBoddy(code, interestList[i].month, monthInterest, totalForMonth);
+        index = 0;
+    }
+    message += utils.tranferCost(opDetails[0].TransferCost)
+    + utils.feeBoddy(opDetails[0].Fee===1, sumFactVal, sumFactVal, opDetails[0].DeferredInterestCode, opDetails[0].SubTotal);//cambiar totalCosts y el codigo [2-3]
 
 
     for (let i = 0; i < deductions.length; i++) {
         sumDeductionsVal = deductions[i].Amount;
+        let deduction = deductions[i]
+        message += utils.deductions(deduction.Description, deduction.Amount, deduction.idOperation, deduction.Code)
     }
-    for (let i = 0; i < invoices.length; i++) {
-        sumFactVal = invoices[i].Amount;
-    }
+    message += utils.endOp(opDetails[0].Total,sumDeductionsVal)
+
     commisionVal = sumFactVal * (opDetails[0].Comission / 100)
     retentionVal = sumFactVal * (opDetails[0].Retention / 100)
     interestVal = sumFactVal * (opDetails[0].Interes / 100)
 
-    console.log(opDetails, invoices, deductions)
+    
 
     // Opciones para generar el PDF desde HTML
     const pdfOptions = {
@@ -283,7 +310,7 @@ app.get("/sendEmailOP", async function (req, res) {
     const sendEmailWithAttachment = async () => {
         try {
             // Generar el PDF desde HTML
-            pdf.create(htmlContent, pdfOptions).toFile('./file3.pdf', async (err, result) => {
+            pdf.create(message, pdfOptions).toFile('./file3.pdf', async (err, result) => {
                 if (err) throw err;
 
                 // Adjuntar el archivo PDF al correo
@@ -293,8 +320,8 @@ app.get("/sendEmailOP", async function (req, res) {
                 const msg = {
                     to: 'josuegupi@gmail.com', // Reemplaza con la dirección de destino
                     from: 'sistemaInverEllens@gmail.com', // Reemplaza con tu dirección de correo
-                    subject: 'Adjunto: PDF generado desde HTML en Node.js',
-                    text: '¡Hola! Adjunto encontrarás el PDF generado desde HTML en Node.js.',
+                    subject: 'Operacion',
+                    text: '¡Hola! Adjunto encontrarás el PDF generado ',
                     attachments: [
                         {
                             content: attachment.toString('base64'),
@@ -316,33 +343,63 @@ app.get("/sendEmailOP", async function (req, res) {
     };
 
     // Llamar a la función para enviar el correo con el PDF adjunto
-    //await sendEmailWithAttachment();
+    await sendEmailWithAttachment();
 
 });
 
 
 app.get("/getPDFOp", async function (req, res) {
     //const idOperation = req.body.idOperation;
-    const idOperation = 33;
+    const idOperation = req.body.idOperation;
     // HTML que quieres convertir a PDF
-    const htmlContent = `<p>TEXTO</p>`;
-    var sumFactVal = 0, sumDeductionsVal = 0;
+
+    var sumFactVal = 0; sumDeductionsVal = 0;
 
     const opDetails = (await connection.promise().query(`CALL SP_GetOpDetails(${idOperation});`))[0][0]
-    const invoices = (await connection.promise().query(`CALL SP_GetOpDeductions(${idOperation});`))[0][0]
-    const deductions = (await connection.promise().query(`CALL SP_GetOpInvoices(${idOperation});`))[0][0]
+    const deductions = (await connection.promise().query(`CALL SP_GetOpDeductions(${idOperation});`))[0][0]
+    const invoices = (await connection.promise().query(`CALL SP_GetOpInvoices(${idOperation});`))[0][0]
+    var message = utils.pdfHeader(opDetails[0].CardId, opDetails[0].opNumber) + utils.invoicesHeader(opDetails[0].ClientName, opDetails[0].opNumber, opDetails[0].Date);
+
+    for (let i = 0; i < invoices.length; i++) {
+        
+        sumFactVal += invoices[i].Amount;
+        let invoice = invoices[i];
+        message += utils.invoicesBoddy(invoice.Number, invoice.Entity, invoice.Date, invoice.Amount);
+    }
+    let totalInterest =  ((((opDetails[0].Interes / 100) / 30) * opDetails[0].Term * sumFactVal)).toFixed(2)
+    message += utils.subTotal(sumFactVal) + utils.retentionValue(opDetails[0].Retention, opDetails[0].RetentionCode, sumFactVal)
+        + utils.comissionValue(opDetails[0].Comission, opDetails[0].ComissionCode, sumFactVal)
+        + utils.legalExpenses(opDetails[0].LegalExpenses, opDetails[0].LegalExpenseCode, ((totalInterest)), opDetails[0].SubTotal, opDetails[0].TransferCost)
+        + utils.monthInteretsHeader(opDetails[0].Date, opDetails[0].Date, opDetails[0].Term);
+
+    
+    let interestList = utils.obtainDates(opDetails[0].Term, opDetails[0].Date);
+    console.log('list',interestList)
+    let index = 1;
+    for (let i = 0; i < interestList.length; i++) {
+        let monthInterest = (interestList[i].days / opDetails[0].Term) * totalInterest;
+        let code =  index === 1 ? opDetails[0].RealInteresCode : opDetails[0].DeferredInterestCode;
+        let totalForMonth = i == interestList.length-1 ? totalInterest : null;
+        message += utils.monthInteretsBoddy(code, interestList[i].month, monthInterest, totalForMonth);
+        index = 0;
+    }
+    message += utils.tranferCost(opDetails[0].TransferCost)
+    + utils.feeBoddy(opDetails[0].Fee===1, sumFactVal, sumFactVal, opDetails[0].DeferredInterestCode, opDetails[0].SubTotal);//cambiar totalCosts y el codigo [2-3]
+
 
     for (let i = 0; i < deductions.length; i++) {
         sumDeductionsVal = deductions[i].Amount;
+        let deduction = deductions[i]
+        message += utils.deductions(deduction.Description, deduction.Amount, deduction.idOperation, deduction.Code)
     }
-    for (let i = 0; i < invoices.length; i++) {
-        sumFactVal = invoices[i].Amount;
-    }
+    message += utils.endOp(opDetails[0].Total,sumDeductionsVal)
+
     commisionVal = sumFactVal * (opDetails[0].Comission / 100)
     retentionVal = sumFactVal * (opDetails[0].Retention / 100)
     interestVal = sumFactVal * (opDetails[0].Interes / 100)
 
-    console.log(opDetails, invoices, deductions)
+    
+
     // Opciones para generar el PDF desde HTML
     const pdfOptions = {
         format: 'Letter', height: "22in",        // allowed units: mm, cm, in, px
@@ -353,12 +410,12 @@ app.get("/getPDFOp", async function (req, res) {
     const dowloadFile = async () => {
         try {
             // Generar el PDF desde HTML
-            pdf.create(htmlContent, pdfOptions).toFile('./file3.pdf', async (err, result) => {
+            pdf.create(message, pdfOptions).toFile('./file3.pdf', async (err, result) => {
                 if (err) throw err;
 
                 const attachment = fs.readFileSync(result.filename);
 
-                //res.download(result.filename)
+                res.download(result.filename)
 
             });
         } catch (error) {
@@ -369,7 +426,6 @@ app.get("/getPDFOp", async function (req, res) {
     await dowloadFile();
 
 });
-
 
 
 
