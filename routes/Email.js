@@ -28,18 +28,17 @@ app.post('/send-email', async (req, res) => {
                 pagador
             }
         }
-    };
-
-    try {
-        await sgMail.send(msg);
-        res.status(200).send("Email has been sent");
-    } catch (error) {
-        console.error(error);
-        if (error.response) {
-            console.error(error.response.body);
-        }
-        res.status(500).send('Error sending email');
     }
+    sgMail
+        .send(msg)
+        .then(() => {
+            console.log('Email sent')
+            res.status(200).send("Email has been sent");
+        })
+        .catch((error) => {
+            console.error(error)
+            res.status(500).send('Error sending email');
+        })
 });
 
 
