@@ -294,7 +294,7 @@ app.post("/sendEmailOP", async function (req, res) {
     }
     message += utils.endOp(opDetails[0].Total,sumDeductionsVal)
 
-    commisionVal = sumFactVal * (opDetails[0].Comission / 100)
+    commisionVal = sumFactVal * (opDetails[0].Comission / 100)//
     retentionVal = sumFactVal * (opDetails[0].Retention / 100)
     interestVal = sumFactVal * (opDetails[0].Interes / 100)
 
@@ -348,9 +348,10 @@ app.post("/sendEmailOP", async function (req, res) {
 });
 
 
-app.get("/getPDFOp", async function (req, res) {
+app.post("/getPDFOp", async function (req, res) {
     //const idOperation = req.body.idOperation;
     const idOperation = req.body.idOperation;
+    console.log(req.body);
     // HTML que quieres convertir a PDF
 
     var sumFactVal = 0; sumDeductionsVal = 0;
