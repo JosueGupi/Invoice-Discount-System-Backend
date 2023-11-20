@@ -232,7 +232,7 @@ app.post("/updateUser", function (req, res) {
 
 app.post("/deleteUser", function (req, res) {
     const idUser = req.body.idUser;
-    
+
 
     connection.query(`CALL SP_DeleteUser(${idUser});`,
         function (err, result) {
@@ -248,109 +248,75 @@ app.post("/deleteUser", function (req, res) {
     );
 });
 
-app.post("/sendEmailOP", async function (req, res) {
-    
-// HTML que quieres convertir a PDF
-const htmlContent = `<p>TEXTO</p>`;
+app.get("/sendEmailOP", async function (req, res) {
 
-let opDetails, deductions,invoices, commisionVal, retentionVal, interestVal, sumFactVal = 0, sumDeductionsVal = 0;
+    const idOperation = 33//req.body.idOperation;
+    // HTML que quieres convertir a PDF
+    const htmlContent = `<p>TEXTO</p>`;
 
-    connection.query(`CALL SP_GetOpDetails(${idOperation});`,
-        async function (err, result) {
+    var sumFactVal = 0; sumDeductionsVal = 0;
 
-            if (err) {
-                res.json(err);
-                throw err;
-            }
-            else {
-                console.log(result[0])
-                opDetails = result[0]
-            }
-        }
-    );
-    connection.query(`CALL SP_GetOpDeductions(${idOperation});`,
-        async function (err, result) {
+    const opDetails = (await connection.promise().query(`CALL SP_GetOpDetails(${idOperation});`))[0][0]
+    const invoices = (await connection.promise().query(`CALL SP_GetOpDeductions(${idOperation});`))[0][0]
+    const deductions = (await connection.promise().query(`CALL SP_GetOpInvoices(${idOperation});`))[0][0]
 
-            if (err) {
-                res.json(err);
-                throw err;
-            }
-            else {
-                console.log(result[0])
-                deductions = result[0]
-            }
-        }
-    );
-    connection.query(`CALL SP_GetOpInvoices(${idOperation});`,
-        async function (err, result) {
 
-            if (err) {
-                res.json(err);
-                throw err;
-            }
-            else {
-                console.log(result[0])
-                invoices = result[0]
-            }
-        }
-    );
-
-    console.log(opDetails, deductions,invoices);
-
-    for(let i = 0; i < deductions.length; i++) {
+    for (let i = 0; i < deductions.length; i++) {
         sumDeductionsVal = deductions[i].Amount;
     }
-    for(let i = 0; i < invoices.length; i++) {
+    for (let i = 0; i < invoices.length; i++) {
         sumFactVal = invoices[i].Amount;
     }
-    commisionVal = sumFactVal * (opDetails[0].Comission/100)
-    retentionVal = sumFactVal * (opDetails[0].Retention/100)
-    interestVal = sumFactVal * (opDetails[0].Interes/100)
+    commisionVal = sumFactVal * (opDetails[0].Comission / 100)
+    retentionVal = sumFactVal * (opDetails[0].Retention / 100)
+    interestVal = sumFactVal * (opDetails[0].Interes / 100)
 
-    
+    console.log(opDetails, invoices, deductions)
 
-// Opciones para generar el PDF desde HTML
-const pdfOptions = { format: 'Letter',height: "22in",        // allowed units: mm, cm, in, px
-width: "12in"  };
+    // Opciones para generar el PDF desde HTML
+    const pdfOptions = {
+        format: 'Letter', height: "22in",        // allowed units: mm, cm, in, px
+        width: "12in"
+    };
 
-// Función para generar el PDF desde HTML y enviarlo como adjunto
-const sendEmailWithAttachment = async () => {
-  try {
-    // Generar el PDF desde HTML
-    pdf.create(htmlContent,pdfOptions).toFile('./file3.pdf', async (err, result) => {
-      if (err) throw err;
+    // Función para generar el PDF desde HTML y enviarlo como adjunto
+    const sendEmailWithAttachment = async () => {
+        try {
+            // Generar el PDF desde HTML
+            pdf.create(htmlContent, pdfOptions).toFile('./file3.pdf', async (err, result) => {
+                if (err) throw err;
 
-      // Adjuntar el archivo PDF al correo
-      
-      const attachment = fs.readFileSync(result.filename);
+                // Adjuntar el archivo PDF al correo
 
-      const msg = {
-        to: 'josuegupi@gmail.com', // Reemplaza con la dirección de destino
-        from: 'sistemaInverEllens@gmail.com', // Reemplaza con tu dirección de correo
-        subject: 'Adjunto: PDF generado desde HTML en Node.js',
-        text: '¡Hola! Adjunto encontrarás el PDF generado desde HTML en Node.js.',
-        attachments: [
-          {
-            content: attachment.toString('base64'),
-            filename: 'generated_pdf.pdf',
-            type: 'application/pdf',
-            disposition: 'attachment',
-          },
-        ],
-      };
+                const attachment = fs.readFileSync(result.filename);
 
-      // Enviar el correo electrónico
-      await sgMail.send(msg);
-      console.log('Correo electrónico enviado correctamente con el PDF adjunto.');
-      
-    });
-  } catch (error) {
-    console.error('Error al enviar el correo electrónico:', error.toString());
-  }
-};
+                const msg = {
+                    to: 'josuegupi@gmail.com', // Reemplaza con la dirección de destino
+                    from: 'sistemaInverEllens@gmail.com', // Reemplaza con tu dirección de correo
+                    subject: 'Adjunto: PDF generado desde HTML en Node.js',
+                    text: '¡Hola! Adjunto encontrarás el PDF generado desde HTML en Node.js.',
+                    attachments: [
+                        {
+                            content: attachment.toString('base64'),
+                            filename: 'generated_pdf.pdf',
+                            type: 'application/pdf',
+                            disposition: 'attachment',
+                        },
+                    ],
+                };
 
-// Llamar a la función para enviar el correo con el PDF adjunto
-await sendEmailWithAttachment();
+                // Enviar el correo electrónico
+                await sgMail.send(msg);
+                console.log('Correo electrónico enviado correctamente con el PDF adjunto.');
+
+            });
+        } catch (error) {
+            console.error('Error al enviar el correo electrónico:', error.toString());
+        }
+    };
+
+    // Llamar a la función para enviar el correo con el PDF adjunto
+    //await sendEmailWithAttachment();
 
 });
 
@@ -360,85 +326,49 @@ app.get("/getPDFOp", async function (req, res) {
     const idOperation = 33;
     // HTML que quieres convertir a PDF
     const htmlContent = `<p>TEXTO</p>`;
-    let opDetails, deductions,invoices, commisionVal, retentionVal, interestVal, sumFactVal = 0, sumDeductionsVal = 0;
+    var sumFactVal = 0, sumDeductionsVal = 0;
 
-    connection.query(`CALL SP_GetOpDetails(${idOperation});`,
-        async function (err, result) {
+    const opDetails = (await connection.promise().query(`CALL SP_GetOpDetails(${idOperation});`))[0][0]
+    const invoices = (await connection.promise().query(`CALL SP_GetOpDeductions(${idOperation});`))[0][0]
+    const deductions = (await connection.promise().query(`CALL SP_GetOpInvoices(${idOperation});`))[0][0]
 
-            if (err) {
-                res.json(err);
-                throw err;
-            }
-            else {
-                console.log(result[0])
-                opDetails = result[0]
-            }
-        }
-    );
-    connection.query(`CALL SP_GetOpDeductions(${idOperation});`,
-        async function (err, result) {
-
-            if (err) {
-                res.json(err);
-                throw err;
-            }
-            else {
-                console.log(result[0])
-                deductions = result[0]
-            }
-        }
-    );
-    connection.query(`CALL SP_GetOpInvoices(${idOperation});`,
-        async function (err, result) {
-
-            if (err) {
-                res.json(err);
-                throw err;
-            }
-            else {
-                console.log(result[0])
-                invoices = result[0]
-            }
-        }
-    );
-
-    console.log(opDetails, deductions,invoices);
-
-    for(let i = 0; i < deductions.length; i++) {
+    for (let i = 0; i < deductions.length; i++) {
         sumDeductionsVal = deductions[i].Amount;
     }
-    for(let i = 0; i < invoices.length; i++) {
+    for (let i = 0; i < invoices.length; i++) {
         sumFactVal = invoices[i].Amount;
     }
-    commisionVal = sumFactVal * (opDetails[0].Comission/100)
-    retentionVal = sumFactVal * (opDetails[0].Retention/100)
-    interestVal = sumFactVal * (opDetails[0].Interes/100)
+    commisionVal = sumFactVal * (opDetails[0].Comission / 100)
+    retentionVal = sumFactVal * (opDetails[0].Retention / 100)
+    interestVal = sumFactVal * (opDetails[0].Interes / 100)
 
-    
+    console.log(opDetails, invoices, deductions)
     // Opciones para generar el PDF desde HTML
-    const pdfOptions = { format: 'Letter',height: "22in",        // allowed units: mm, cm, in, px
-    width: "12in"  };
-    
+    const pdfOptions = {
+        format: 'Letter', height: "22in",        // allowed units: mm, cm, in, px
+        width: "12in"
+    };
+
     // Función para generar el PDF desde HTML y enviarlo como adjunto
     const dowloadFile = async () => {
-      try {
-        // Generar el PDF desde HTML
-        pdf.create(htmlContent,pdfOptions).toFile('./file3.pdf', async (err, result) => {
-          if (err) throw err;
-    
-          const attachment = fs.readFileSync(result.filename);
-    
-          //res.download(result.filename)
-          
-        });
-      } catch (error) {
-        console.error('Error al enviar el correo electrónico:', error.toString());
-      }
+        try {
+            // Generar el PDF desde HTML
+            pdf.create(htmlContent, pdfOptions).toFile('./file3.pdf', async (err, result) => {
+                if (err) throw err;
+
+                const attachment = fs.readFileSync(result.filename);
+
+                //res.download(result.filename)
+
+            });
+        } catch (error) {
+            console.error('Error al enviar el correo electrónico:', error.toString());
+        }
     };
-    
+
     await dowloadFile();
-    
-    });
+
+});
 
 
 
