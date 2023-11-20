@@ -1,13 +1,9 @@
 const app = require("express").Router();
-const { response } = require("express");
-const connection = require("../mysql");
-const bodyParser = require('body-parser');
 const sgMail = require('@sendgrid/mail');
 
 require('dotenv').config();
 
-app.use(bodyParser.json());
-sgMail.setApiKey('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');
+sgMail.setApiKey(api_key = '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')
 
 
 app.post('/send-email', async (req, res) => {
