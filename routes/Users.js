@@ -9,7 +9,7 @@ const fs = require('fs');
 const utils = require('./Utils');
 app.use(bodyParser.json());
 
-sgMail.setApiKey('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');
+sgMail.setApiKey('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');
 
 app.post("/login", function (req, res) {
     const password = req.body.password,
@@ -318,8 +318,8 @@ app.post("/sendEmailOP", async function (req, res) {
                 const attachment = fs.readFileSync(result.filename);
 
                 const msg = {
-                    to: 'josuegupi@gmail.com', // Reemplaza con la dirección de destino
-                    from: 'sistemaInverEllens@gmail.com', // Reemplaza con tu dirección de correo
+                    to: 'sistemaInverEllens@gmail.com',
+                    from: 'sistemaInverEllens@gmail.com',
                     subject: 'Operacion',
                     text: '¡Hola! Adjunto encontrarás el PDF generado ',
                     attachments: [
