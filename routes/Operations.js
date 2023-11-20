@@ -45,7 +45,7 @@ app.post("/createOperation", function (req, res) {
         factSum = Number(req.body.factSum);//
     let date = new Date();
 
-    //date = date.toLocaleString("es-US", {timeZone: "America/Costa_Rica"});
+    //date = date.toLocaleString("es-US", {imeZone: "America/Costa_Rica"});
     const queryStrin = `CALL SP_InsertOperation(
         ${idClient}, 
         ${subTotal}, 
