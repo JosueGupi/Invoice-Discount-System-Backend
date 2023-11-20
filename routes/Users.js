@@ -9,7 +9,7 @@ const fs = require('fs');
 const utils = require('./Utils');
 app.use(bodyParser.json());
 
-sgMail.setApiKey('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');
+sgMail.setApiKey('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');
 
 app.post("/login", function (req, res) {
     const password = req.body.password,
