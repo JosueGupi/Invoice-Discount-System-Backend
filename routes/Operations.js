@@ -176,9 +176,10 @@ app.post("/operationDetail", function (req, res) {
 app.post("/updateOperation", function (req, res) {
     const idOperation = Number(req.body.opNumber),
     amount = Number(req.body.amount),
-    opCode = req.body.opCode,
-        description = req.body.description;
-    connection.query(`CALL SP_CreditForm(${idOperation},${amount},'${opCode}','${description}');`,
+    opCode = Number(req.body.opCode),
+    description = req.body.description;
+        console.log(description)
+    connection.query(`CALL SP_CreditForm(${idOperation},${amount},${opCode},'${description}');`,
         function (err, result) {
 
             if (err) {
