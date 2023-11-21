@@ -167,7 +167,6 @@ app.post("/operationDetail", function (req, res) {
                 throw err;
             }
             else {
-
                 res.json(result[0]);
             }
         }
@@ -178,8 +177,9 @@ app.post("/updateOperation", function (req, res) {
     amount = Number(req.body.amount),
     opCode = Number(req.body.opCode),
     description = req.body.description;
-        console.log(description)
-    connection.query(`CALL SP_CreditForm(${idOperation},${amount},${opCode},'${description}');`,
+    const query =`CALL SP_CreditForm(${idOperation},${amount},${opCode},'${description}');`
+    console.log(query)
+    connection.query(query,
         function (err, result) {
 
             if (err) {
